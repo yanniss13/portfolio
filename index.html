@@ -242,9 +242,7 @@
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 4rem;
+      display: flex;
       align-items: center;
     }
 
@@ -357,57 +355,6 @@
     .tag-canvas {
       color: var(--pink);
       background: var(--pink-light);
-    }
-
-    /* Hero card */
-    .hero-card {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      aspect-ratio: 3/4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 60px rgba(124, 58, 237, 0.1);
-    }
-
-    .hero-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 40%, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
-    }
-
-    .hero-avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: var(--surface-3);
-      border: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-avatar svg {
-      width: 40px;
-      height: 40px;
-      color: var(--text-muted);
-    }
-
-    .hero-card-label {
-      position: absolute;
-      bottom: 1.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.7rem;
-      color: var(--text-faint);
-      white-space: nowrap;
-      letter-spacing: 0.05em;
     }
 
     /* ── SECTION COMMONS ─────────────────────────────────── */
@@ -1045,16 +992,6 @@
           <span class="tag tag-mvc">MVC</span>
         </div>
       </div>
-      <div class="hero-card">
-        <div class="hero-avatar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </div>
-        <span class="hero-card-label">Portfolio — Don</span>
-      </div>
-    </div>
   </section>
 
   <!-- PROJETS -->
