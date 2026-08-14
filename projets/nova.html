@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOVA — Étude de cas | BOUZID Yanniss</title>
+  <meta name="description" content="Étude de cas de NOVA, application collaborative temps réel : architecture en couches vérifiée par un test, mises à jour PWA explicites et moteur de statistiques en borne basse." />
+  <link rel="canonical" href="https://yanniss13.github.io/portfolio/projets/nova.html" />
+  <meta name="theme-color" content="#0b1326" />
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:url" content="https://yanniss13.github.io/portfolio/projets/nova.html" />
+  <meta property="og:title" content="NOVA — Étude de cas technique" />
+  <meta property="og:description" content="Trois décisions techniques sur une application collaborative temps réel : architecture en couches, mises à jour PWA explicites, statistiques en borne basse." />
+  <meta property="og:image" content="https://yanniss13.github.io/portfolio/assets/img/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500&family=Sora:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <style>
+    /* Styles propres à l'étude de cas — le reste vient de la feuille du portfolio */
+    .case { padding-top: calc(var(--nav-h) + 3rem); }
+    .case__back {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--color-text-muted); margin-bottom: 1.75rem;
+      transition: color 200ms var(--ease);
+    }
+    .case__back:hover { color: var(--color-primary-fixed-dim); }
+    .case__title {
+      font-family: "Sora", sans-serif;
+      font-size: clamp(2.1rem, 1.2rem + 3vw, 3.2rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+    }
+    .case__lede { font-size: 1.15rem; color: var(--color-text-muted); max-width: 62ch; margin-top: 1.25rem; }
+    .case__meta { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+
+    .figures {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter);
+      margin: 3.5rem 0 1rem; padding: 1.75rem;
+      border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+      background: rgba(19, 27, 46, .55);
+    }
+    .figure__num {
+      font-family: "Sora", sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1;
+      color: var(--color-primary-container);
+    }
+    .figure__label {
+      display: block; margin-top: .5rem; font-size: .7rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--color-text-muted);
+    }
+
+    .decision { margin-top: clamp(3rem, 6vw, 4.5rem); }
+    .decision__index {
+      font-family: "JetBrains Mono", monospace; font-size: .8rem;
+      color: var(--color-primary-fixed-dim); letter-spacing: .1em;
+    }
+    .decision__title {
+      font-family: "Sora", sans-serif; font-size: clamp(1.4rem, 1rem + 1.4vw, 1.9rem);
+      font-weight: 700; line-height: 1.25; margin-top: .6rem;
+    }
+    .decision__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.25rem, 3vw, 2.25rem); margin-top: 1.75rem; }
+    .block {
+      padding: 1.4rem 1.5rem; border-radius: var(--radius-lg);
+      border: 1px solid var(--hairline); background: rgba(19, 27, 46, .5);
+    }
+    .block--out { border-color: rgba(0, 240, 255, .22); background: rgba(0, 240, 255, .05); }
+    .block h3 {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--color-text-muted); margin-bottom: .7rem;
+    }
+    .block--out h3 { color: var(--color-primary-fixed-dim); }
+    .block p + p { margin-top: .8rem; }
+    .decision p, .case p { color: var(--color-text-muted); }
+    .decision strong, .case strong { color: var(--color-text); font-weight: 700; }
+
+    .layers { display: grid; gap: .55rem; margin-top: 1.75rem; }
+    .layer {
+      display: grid; grid-template-columns: 8.5rem 1fr; gap: 1rem; align-items: baseline;
+      padding: .85rem 1.1rem; border-radius: var(--radius);
+      border: 1px solid var(--hairline); background: rgba(6, 14, 32, .45);
+    }
+    .layer code {
+      font-family: "JetBrains Mono", monospace; font-size: .82rem;
+      color: var(--color-primary-fixed-dim);
+    }
+    .layer span { color: var(--color-text-muted); font-size: .95rem; }
+    .layer--rule {
+      border-color: rgba(220, 184, 255, .28); background: rgba(119, 1, 208, .12);
+      grid-template-columns: 1fr;
+    }
+    .layer--rule span { color: var(--color-secondary); }
+
+    .quote {
+      margin-top: 1.5rem; padding: 1.1rem 1.35rem;
+      border-left: 3px solid var(--color-primary-fixed-dim);
+      background: rgba(0, 240, 255, .05);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-family: "JetBrains Mono", monospace; font-size: .86rem; line-height: 1.7;
+      color: var(--color-text);
+    }
+    .quote cite { display: block; margin-top: .6rem; font-family: "Hanken Grotesk", sans-serif; font-style: normal; font-size: .78rem; color: var(--color-text-muted); }
+
+    .takeaway {
+      margin-top: clamp(3rem, 6vw, 4.5rem); padding: clamp(1.6rem, 3vw, 2.4rem);
+      border-radius: var(--radius-xl); border: 1px solid rgba(0, 240, 255, .2);
+      background: linear-gradient(140deg, rgba(119, 1, 208, .14), rgba(0, 240, 255, .06));
+    }
+    .takeaway h2 { font-family: "Sora", sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .takeaway ul { list-style: none; padding: 0; display: grid; gap: .85rem; }
+    .takeaway li { position: relative; padding-left: 1.6rem; color: var(--color-text-muted); }
+    .takeaway li::before {
+      content: ""; position: absolute; left: 0; top: .5em;
+      width: 8px; height: 8px; background: var(--color-primary-fixed-dim); transform: rotate(45deg);
+    }
+
+    @media (max-width: 768px) {
+      .figures { grid-template-columns: repeat(2, 1fr); }
+      .decision__grid { grid-template-columns: 1fr; }
+      .layer { grid-template-columns: 1fr; gap: .3rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <linearGradient id="ybGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#00dbe9" /><stop offset="1" stop-color="#dcb8ff" />
+      </linearGradient>
+      <symbol id="yb-logo" viewBox="0 0 48 48">
+        <rect x="3" y="3" width="42" height="42" rx="13" fill="none" stroke="url(#ybGrad)" stroke-width="2" opacity=".55" />
+        <path d="M11 14 L18 23 L18 34 M25 14 L18 23" fill="none" stroke="url(#ybGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M28 14 L28 34 M28 14 L35 14 L38 17 L38 20 L35 23 L28 23 M28 23 L36 23 L39 26 L39 31 L36 34 L28 34" fill="none" stroke="url(#ybGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12 24 5.73 18.27.5 12 .5z"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a class="brand" href="../index.html" aria-label="BOUZID Yanniss — accueil">
+        <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#yb-logo" /></svg>
+        <span class="brand__text">BOUZID<span class="brand__text-dim"> Yanniss</span></span>
+      </a>
+      <a class="btn btn--ghost" href="../index.html#projects">Tous les projets</a>
+    </div>
+  </header>
+
+  <main>
+    <article class="case section">
+      <div class="container">
+        <a class="case__back" href="../index.html#projects"><i data-lucide="arrow-left"></i> Retour aux projets</a>
+
+        <p class="eyebrow">Étude de cas</p>
+        <h1 class="case__title">NOVA — trois décisions pour une app<br class="hide-sm" /> collaborative <span class="grad">temps réel</span></h1>
+
+        <p class="case__lede">
+          NOVA permet aux membres d'une guilde de composer et partager leurs équipes de raid.
+          Plusieurs personnes modifient les mêmes données en même temps, souvent depuis un
+          téléphone, parfois sans réseau. Trois contraintes qui ont chacune imposé une décision
+          technique — voici lesquelles, et pourquoi.
+        </p>
+
+        <div class="case__meta">
+          <a class="card__link" href="https://yanniss13.github.io/NOVA/" target="_blank" rel="noopener noreferrer"><i data-lucide="external-link"></i> Démo live</a>
+          <a class="card__link" href="https://github.com/yanniss13/NOVA" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg> Code source</a>
+        </div>
+
+        <div class="figures">
+          <div><div class="figure__num">5</div><span class="figure__label">Couches</span></div>
+          <div><div class="figure__num">70</div><span class="figure__label">Fichiers de test</span></div>
+          <div><div class="figure__num">25</div><span class="figure__label">Héros modélisés</span></div>
+          <div><div class="figure__num">155</div><span class="figure__label">Armes référencées</span></div>
+        </div>
+
+        <!-- ===================== DÉCISION 1 ===================== -->
+        <section class="decision">
+          <p class="decision__index">01</p>
+          <h2 class="decision__title">Une architecture en couches, avec une seule règle — vérifiée par un test</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Le code a grossi par extractions successives. Sans discipline, le rendu se met à
+                contenir des calculs, les calculs à toucher au réseau, et plus rien n'est testable
+                sans lancer un navigateur.
+              </p>
+              <p>
+                Une règle écrite dans un fichier de documentation ne tient pas : elle est oubliée
+                au premier ajout pressé.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                La logique de calcul se teste sans DOM ni réseau, ce qui rend les tests rapides et
+                fiables. Une violation de la règle casse la CI avant la revue, pas trois mois plus tard.
+              </p>
+              <p>
+                La règle n'est plus une intention : c'est une contrainte exécutable.
+              </p>
+            </div>
+          </div>
+
+          <div class="layers">
+            <div class="layer"><code>noyau/</code><span>DOM, outils, constantes, client Supabase — ne dépend de rien</span></div>
+            <div class="layer"><code>etat/</code><span>État mutable partagé : session, brouillon d'équipe</span></div>
+            <div class="layer"><code>metier/</code><span>Logique pure : stats, disponibilités, boss, armes — ni DOM ni réseau</span></div>
+            <div class="layer"><code>donnees/</code><span>Accès Supabase, sans aucun rendu</span></div>
+            <div class="layer"><code>vues/</code><span>Tout ce qui touche au DOM</span></div>
+            <div class="layer layer--rule"><span>Règle unique — une couche n'appelle jamais une couche située au-dessus d'elle.</span></div>
+          </div>
+
+          <p style="margin-top:1.5rem">
+            Le test <strong>modules-imports.test.js</strong> parcourt les imports de chaque module et
+            échoue si l'un d'eux « remonte » les couches. Il va plus loin : il refuse aussi les
+            imports morts, les exports que personne n'utilise, et <strong>tout module absent de la
+            liste de cache du service worker</strong> — de sorte qu'un fichier oublié ne peut pas
+            casser silencieusement le mode hors-ligne.
+          </p>
+        </section>
+
+        <!-- ===================== DÉCISION 2 ===================== -->
+        <section class="decision">
+          <p class="decision__index">02</p>
+          <h2 class="decision__title">Les mises à jour ne s'installent pas dans le dos de l'utilisateur</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Le comportement courant d'une PWA est d'appeler <code>skipWaiting()</code> dès
+                l'installation : la nouvelle version prend la main immédiatement.
+              </p>
+              <p>
+                Sur NOVA, un membre peut être en train de composer une équipe — quatre héros, leurs
+                armes, cinq pièces d'armure, trois bijoux. Un rechargement imposé au mauvais moment
+                lui fait perdre son travail.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                La nouvelle version reste en attente. Un bandeau propose la mise à jour ; c'est
+                l'utilisateur qui choisit le moment.
+              </p>
+              <p>
+                Au clic, le message <code>SKIP_WAITING</code> est envoyé au worker en attente, puis
+                la page est rechargée <strong>une seule fois</strong>, après <code>controllerchange</code> —
+                un détail qui évite la boucle de rechargement classique sur ce mécanisme.
+              </p>
+            </div>
+          </div>
+
+          <p class="quote">
+            « Une nouvelle version reste en attente et index.html affiche le bandeau
+            #pwaUpdateBanner. Le clic envoie {type:"SKIP_WAITING"} au worker en attente,
+            attend controllerchange, puis recharge la page une seule fois. »
+            <cite>Documentation d'architecture du projet</cite>
+          </p>
+        </section>
+
+        <!-- ===================== DÉCISION 3 ===================== -->
+        <section class="decision">
+          <p class="decision__index">03</p>
+          <h2 class="decision__title">Le calculateur annonce une borne basse, jamais une estimation</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Les statistiques d'un héros viennent de sources multiples : stats de base, maîtrise,
+                potentiels, équipement, transfert d'attaque de l'arme secondaire. Certaines
+                capacités passives ne sont décrites qu'en texte et ne sont pas calculables.
+              </p>
+              <p>
+                Afficher un total en ignorant ces sources donnerait un chiffre <strong>faux</strong>,
+                sur lequel des joueurs fonderaient leurs choix de composition.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                Un build incomplet ne produit aucun total. Ce qui n'est pas mesurable est rangé
+                explicitement dans une liste <code>uncovered</code>, hors des nombres.
+              </p>
+              <p>
+                Quand une source manque, l'interface annonce une <strong>borne inférieure</strong>
+                plutôt qu'un total. Le chiffre affiché est alors toujours vrai : la valeur réelle
+                lui est supérieure ou égale.
+              </p>
+            </div>
+          </div>
+
+          <p style="margin-top:1.5rem">
+            La même règle s'applique au calculateur de dégâts, qui annonce un chiffre par
+            compétence et refuse d'afficher un dégât par seconde — parce que les temps d'animation
+            du jeu ne sont mesurés nulle part, et qu'un DPS calculé sans eux serait une invention.
+          </p>
+
+          <p class="quote">
+            « Les dégâts de chaque compétence de tes builds contre Akumu. Un chiffre par compétence,
+            jamais un dégât par seconde : les temps d'animation ne sont mesurés nulle part. »
+            <cite>Texte affiché dans l'application</cite>
+          </p>
+
+          <p style="margin-top:1.5rem">
+            C'est un choix d'honnêteté plutôt que de confort : un total approximatif aurait été plus
+            simple à produire et plus satisfaisant à afficher, mais il aurait induit les joueurs en
+            erreur sans qu'ils puissent le savoir.
+          </p>
+        </section>
+
+        <!-- ===================== BILAN ===================== -->
+        <section class="takeaway">
+          <h2>Ce que ce projet m'a appris</h2>
+          <ul>
+            <li><strong>Une règle non vérifiée n'existe pas.</strong> Tant que la contrainte d'architecture vivait dans un fichier de documentation, elle se contournait sans que personne s'en aperçoive. Depuis qu'un test la vérifie, elle tient.</li>
+            <li><strong>Le comportement par défaut n'est pas toujours le bon.</strong> Installer une mise à jour immédiatement est le réflexe des tutoriels ; c'était le mauvais choix pour des utilisateurs au milieu d'une tâche longue.</li>
+            <li><strong>Mieux vaut ne rien afficher qu'afficher un chiffre faux.</strong> Reconnaître les limites d'un calcul dans l'interface elle-même vaut mieux que produire une valeur invérifiable.</li>
+            <li><strong>Le temps réel change la façon de penser l'état.</strong> Quand plusieurs personnes modifient les mêmes données simultanément, séparer l'état partagé, la logique et le rendu cesse d'être une élégance : c'est ce qui rend le problème traitable.</li>
+          </ul>
+        </section>
+
+        <div style="margin-top:3rem; display:flex; flex-wrap:wrap; gap:1rem">
+          <a class="btn btn--primary" href="https://yanniss13.github.io/NOVA/" target="_blank" rel="noopener noreferrer">Essayer NOVA <i data-lucide="arrow-up-right"></i></a>
+          <a class="btn btn--ghost" href="../index.html#contact">Me contacter <i data-lucide="mail"></i></a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner container">
+      <a class="brand footer__brand" href="../index.html" aria-label="BOUZID Yanniss — accueil">
+        <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#yb-logo" /></svg>
+        <span class="brand__text">BOUZID<span class="brand__text-dim"> Yanniss</span></span>
+      </a>
+      <p class="footer__copy">© <span id="year">2026</span> BOUZID Yanniss</p>
+      <div class="footer__social">
+        <a href="https://github.com/yanniss13" aria-label="GitHub"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg></a>
+        <a href="../index.html#contact" aria-label="Email"><i data-lucide="mail"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@1.31.0/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide && typeof window.lucide.createIcons === "function") window.lucide.createIcons();
+    var y = document.getElementById("year");
+    if (y) y.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

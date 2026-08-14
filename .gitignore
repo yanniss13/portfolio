@@ -1,1 +1,6 @@
 .vscode/settings.json
+
+# Données personnelles hors dépôt public : le téléphone n'est utilisé que pour
+# générer la variante privée du CV, jamais publiée.
+cv/phone.local.txt
+cv/_cv-prive.html

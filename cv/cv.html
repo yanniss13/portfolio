@@ -1,0 +1,348 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>CV — BOUZID Yanniss</title>
+<style>
+  /* Polices embarquées localement, jamais chargées depuis le réseau.
+     Avec Google Fonts, un rendu lancé sur une connexion lente produisait
+     un PDF en Segoe UI sans le moindre avertissement : l'apparence du CV
+     dépendait du réseau au moment du build. Ici le rendu est déterministe
+     et fonctionne hors ligne. */
+  @font-face { font-family: "Hanken Grotesk"; font-weight: 400; font-style: normal; font-display: block; src: url("./fonts/HankenGrotesk-400.woff2") format("woff2"); }
+  @font-face { font-family: "Hanken Grotesk"; font-weight: 700; font-style: normal; font-display: block; src: url("./fonts/HankenGrotesk-700.woff2") format("woff2"); }
+  @font-face { font-family: "Sora"; font-weight: 600; font-style: normal; font-display: block; src: url("./fonts/Sora-600.woff2") format("woff2"); }
+  @font-face { font-family: "Sora"; font-weight: 700; font-style: normal; font-display: block; src: url("./fonts/Sora-700.woff2") format("woff2"); }
+  @font-face { font-family: "Sora"; font-weight: 800; font-style: normal; font-display: block; src: url("./fonts/Sora-800.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 500; font-style: normal; font-display: block; src: url("./fonts/JetBrainsMono-500.woff2") format("woff2"); }
+
+  /* ============================================================
+     CV — source unique, rendu en PDF par cv/build-cv.ps1 (Edge headless).
+     Ce fichier ne contient AUCUNE donnée personnelle sensible : le dépôt
+     est public. Le téléphone vit dans cv/phone.local.txt (non versionné)
+     et n'est injecté, à l'emplacement du marqueur PHONE_SLOT, que pour
+     la variante privée destinée aux candidatures directes.
+     ============================================================ */
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1c2534;
+    --ink-soft: #4a5568;
+    --side-bg: #2b3648;
+    --side-ink: #e8edf5;
+    --side-ink-soft: #a9b6c9;
+    --accent: #0a7d8a;        /* teal lisible sur blanc */
+    --accent-bright: #35d6e4; /* cyan pour le bandeau sombre */
+    --rule: #dde3ec;
+  }
+
+  html, body { width: 210mm; height: 297mm; }
+  body {
+    display: flex;
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: 9.3pt;
+    line-height: 1.44;
+    color: var(--ink);
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* ---------------- Colonne latérale ---------------- */
+  .side {
+    width: 68mm;
+    flex: none;
+    background: var(--side-bg);
+    color: var(--side-ink);
+    padding: 11mm 7.5mm;
+  }
+  .photo {
+    width: 40mm; height: 40mm;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 22%;
+    display: block;
+    margin: 0 auto 7mm;
+    border: 2.5px solid var(--accent-bright);
+  }
+  .side h2 {
+    font-family: "Sora", sans-serif;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin: 6.6mm 0 3mm;
+    padding-bottom: 1.6mm;
+    border-bottom: 1px solid rgba(255,255,255,.16);
+  }
+  .side h2:first-of-type { margin-top: 0; }
+  .side p, .side li { color: var(--side-ink-soft); font-size: 9.2pt; }
+  .side ul { list-style: none; }
+  .side li { margin-bottom: 2.4mm; }
+
+  .contact li {
+    display: flex;
+    gap: 2.4mm;
+    align-items: flex-start;
+    word-break: break-word;
+    color: var(--side-ink);
+  }
+  .contact .ico { color: var(--accent-bright); flex: none; width: 3.8mm; font-size: 9pt; }
+  /* Les liens restent cliquables dans le PDF (Edge conserve les annotations),
+     mais gardent l'aspect du texte : pas de bleu ni de soulignement par défaut. */
+  a { color: inherit; text-decoration: none; }
+  .contact a { border-bottom: .5px solid rgba(53,214,228,.42); padding-bottom: .2mm; }
+  .main a { color: inherit; }
+
+  .skill-group { margin-bottom: 4.4mm; }
+  .skill-group strong {
+    display: block;
+    font-size: 8.4pt;
+    letter-spacing: .04em;
+    color: var(--side-ink);
+    margin-bottom: 1.7mm;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 1.4mm; }
+  .tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7.3pt;
+    padding: 1mm 1.9mm;
+    border-radius: 6px;
+    background: rgba(53,214,228,.13);
+    border: .5px solid rgba(53,214,228,.32);
+    color: #cfeff3;
+  }
+
+  /* ---------------- Colonne principale ---------------- */
+  .main { flex: 1; padding: 9mm 8mm 9mm 8mm; min-width: 0; }
+  .name {
+    font-family: "Sora", sans-serif;
+    font-size: 26pt;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -.02em;
+  }
+  .name span { font-weight: 600; color: var(--ink-soft); }
+  .role {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9pt;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 1.6mm;
+  }
+  .name-rule {
+    width: 100%; height: 2.4px;
+    background: linear-gradient(90deg, var(--accent), #7b4fd0 70%, transparent);
+    margin: 4mm 0 5mm;
+    border-radius: 2px;
+  }
+
+  .main h2 {
+    font-family: "Sora", sans-serif;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 4.5mm 0 2.1mm;
+    padding-bottom: 1.2mm;
+    border-bottom: 1px solid var(--rule);
+  }
+  .main h2:first-of-type { margin-top: 0; }
+
+  .lede { color: var(--ink-soft); font-size: 9.5pt; }
+
+  .item { margin-bottom: 2.7mm; }
+  .item:last-child { margin-bottom: 0; }
+  .item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
+  .item-title { font-weight: 700; font-size: 9.9pt; }
+  .item-meta {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7.8pt;
+    color: var(--ink-soft);
+    flex: none;
+  }
+  .item p { color: var(--ink-soft); font-size: 9.3pt; }
+  .item .stack {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 7.8pt;
+    color: var(--accent);
+    margin-top: .8mm;
+  }
+  .flag {
+    display: inline-block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 6.8pt;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 4px;
+    padding: .4mm 1.4mm;
+    margin-left: 1.6mm;
+    vertical-align: 1.2px;
+  }
+  ul.bullets { list-style: none; }
+  ul.bullets li {
+    position: relative;
+    padding-left: 3.6mm;
+    color: var(--ink-soft);
+    font-size: 9.3pt;
+    margin-bottom: 1mm;
+  }
+  ul.bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 1.6mm;
+    width: 1.5mm; height: 1.5mm;
+    background: var(--accent);
+    border-radius: 1px;
+    transform: rotate(45deg);
+  }
+</style>
+</head>
+<body>
+
+  <aside class="side">
+    <img class="photo" src="./photo.jpg" alt="Photographie de BOUZID Yanniss" />
+
+    <h2>Contact</h2>
+    <ul class="contact">
+      <li><span class="ico">@</span><a href="mailto:yanniss.27@hotmail.fr">yanniss.27@hotmail.fr</a></li>
+      <!--PHONE_SLOT--><!-- Le téléphone n'est PAS écrit ici : ce dépôt est public.
+           build-cv.ps1 remplace le marqueur PHONE_SLOT ci-dessus par le numéro lu
+           dans cv/phone.local.txt (non versionné), pour la seule variante privée.
+           Ne pas supprimer ce marqueur : le script échoue s'il ne le trouve pas. -->
+      <li><span class="ico">&#9673;</span><a href="https://yanniss13.github.io/portfolio/">yanniss13.github.io/portfolio</a></li>
+      <li><span class="ico">&#9670;</span><a href="https://github.com/yanniss13">github.com/yanniss13</a></li>
+      <li><span class="ico">in</span><a href="https://www.linkedin.com/in/yanniss-bouzid-675b71414/">linkedin.com/in/yanniss-bouzid</a></li>
+      <li><span class="ico">&#9678;</span><span>Marseille, PACA &middot; 23 ans</span></li>
+    </ul>
+
+    <h2>Compétences</h2>
+    <div class="skill-group">
+      <strong>Front-end</strong>
+      <div class="tags">
+        <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript ES6+</span><span class="tag">ES Modules</span><span class="tag">Tailwind</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <strong>Back-end</strong>
+      <div class="tags">
+        <span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">PHP</span><span class="tag">MVC</span><span class="tag">API REST</span><span class="tag">Realtime</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <strong>Bases de données</strong>
+      <div class="tags">
+        <span class="tag">PostgreSQL</span><span class="tag">Supabase</span><span class="tag">MongoDB</span><span class="tag">MySQL</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <strong>Qualité &amp; déploiement</strong>
+      <div class="tags">
+        <span class="tag">Playwright</span><span class="tag">Tests unitaires</span><span class="tag">GitHub Actions</span><span class="tag">PWA</span><span class="tag">Git</span>
+      </div>
+    </div>
+
+    <h2>Outils</h2>
+    <p>VS Code &middot; Laragon &middot; Figma &middot; Postman &middot; GitHub</p>
+
+    <h2>Langues</h2>
+    <p>Français : natif &middot; Anglais : notions</p>
+
+    <h2>Centres d'intérêt</h2>
+    <p>Tennis de table &middot; Nouvelles technologies</p>
+  </aside>
+
+  <main class="main">
+    <div class="name">Yanniss <span>BOUZID</span></div>
+    <div class="role">Développeur web junior</div>
+    <div class="name-rule"></div>
+
+    <h2>Profil</h2>
+    <p class="lede">
+      Autodidacte et motivé, je recherche une alternance en développement web ou full-stack,
+      disponible dès que possible (rythme : 3 semaines entreprise / 1 semaine formation).
+      Au-delà du code qui fonctionne, je m'attache à ce qui le rend fiable : architecture
+      lisible, tests automatisés et déploiement continu.
+    </p>
+
+    <h2>Projets</h2>
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title"><a href="https://yanniss13.github.io/NOVA/">NOVA — Application collaborative temps réel</a><span class="flag">Projet phare</span></span>
+      </div>
+      <p>
+        Team builder pour une guilde de jeu : composition d'équipes, gestion des rosters et
+        coordination de raids. Synchronisation en direct entre membres, fonctionnement complet
+        hors-ligne, architecture ES modules en couches et 70 fichiers de test (unitaires,
+        schémas SQL, E2E Playwright), déployés en continu.
+      </p>
+      <div class="stack">JavaScript · Supabase Realtime · PostgreSQL · PWA · Playwright · GitHub Actions</div>
+    </div>
+    <div class="item">
+      <div class="item-head"><span class="item-title"><a href="https://yanniss13.github.io/Projet---Cr-ation-d-api-avec-NodeJS/">API REST — Application de recettes</a></span></div>
+      <p>
+        Conception d'une API avec Node.js et Express : routes, middlewares, connexion à une base
+        de données et tests des endpoints, avec une interface de consultation et de gestion.
+      </p>
+      <div class="stack">Node.js · Express · MongoDB · REST</div>
+    </div>
+    <div class="item">
+      <div class="item-head"><span class="item-title"><a href="https://yanniss.gt.tc/Projet_Resaux/public/index.php?action=login">Application web PHP / MySQL</a></span></div>
+      <p>
+        Réseau social avec architecture MVC personnalisée : programmation orientée objet,
+        authentification, base MySQL/PDO et fonctionnalités CRUD complètes.
+      </p>
+      <div class="stack">PHP · MySQL · PDO · MVC</div>
+    </div>
+    <div class="item">
+      <div class="item-head"><span class="item-title">Hackathon SMSMode — projet collectif</span></div>
+      <p>
+        Problématique réelle proposée par SMSMode : analyse du besoin en équipe, conception d'une
+        solution web en temps limité et présentation du projet en fin d'événement.
+      </p>
+    </div>
+
+    <h2>Expérience</h2>
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title">Stagiaire développeur back-end — C-Logik, Toulon</span>
+        <span class="item-meta">Août – sept. 2026</span>
+      </div>
+      <ul class="bullets">
+        <li>Tests fonctionnels et correction d'anomalies</li>
+        <li>Développement en WINDEV / WLangage en environnement professionnel</li>
+      </ul>
+    </div>
+
+    <h2>Formation</h2>
+    <div class="item">
+      <div class="item-head">
+        <span class="item-title">Titre professionnel Développeur web et web mobile — niveau 5</span>
+        <span class="item-meta">2025 – 2026</span>
+      </div>
+      <p>École RI7, 13400 Aubagne</p>
+    </div>
+
+    <h2>Veille &amp; apprentissage</h2>
+    <ul class="bullets">
+      <li>Pratique quotidienne sur des projets personnels publiés sur GitHub</li>
+      <li>Suivi de la documentation officielle plutôt que de tutoriels seuls</li>
+      <li>Exploration en cours : React et TypeScript</li>
+    </ul>
+
+    <h2>Utilisation des outils IA</h2>
+    <ul class="bullets">
+      <li>Assistance à l'analyse, au débogage et à la documentation du code</li>
+      <li>Préparation de scénarios de test et validation des changements</li>
+      <li>Gain de temps sur les tâches répétitives, pour me concentrer sur la conception</li>
+    </ul>
+  </main>
+
+</body>
+</html>
+

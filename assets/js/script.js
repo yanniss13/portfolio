@@ -18,7 +18,8 @@
     var T = [
       ["tok-kw", "const"], ["", " developer "], ["tok-punc", "= "], ["tok-punc", "{"], ["", "\n"],
       ["", "  "], ["tok-prop", "name"], ["tok-punc", ": "], ["tok-str", "\"BOUZID Yanniss\""], ["tok-punc", ","], ["", "\n"],
-      ["", "  "], ["tok-prop", "stack"], ["tok-punc", ": ["], ["tok-str", "\"Node.js\""], ["tok-punc", ", "], ["tok-str", "\"Express\""], ["tok-punc", ", "], ["tok-str", "\"MongoDB\""], ["tok-punc", ", "], ["", "\n"], ["", "          "], ["tok-str", "\"PHP\""], ["tok-punc", ", "], ["tok-str", "\"JavaScript\""], ["tok-punc", "],"], ["", "\n"],
+      ["", "  "], ["tok-prop", "stack"], ["tok-punc", ": ["], ["tok-str", "\"Node.js\""], ["tok-punc", ", "], ["tok-str", "\"Express\""], ["tok-punc", ", "], ["tok-str", "\"Supabase\""], ["tok-punc", ", "], ["", "\n"], ["", "          "], ["tok-str", "\"PostgreSQL\""], ["tok-punc", ", "], ["tok-str", "\"PHP\""], ["tok-punc", ", "], ["tok-str", "\"JavaScript\""], ["tok-punc", "],"], ["", "\n"],
+      ["", "  "], ["tok-prop", "ships"], ["tok-punc", ": ["], ["tok-str", "\"realtime\""], ["tok-punc", ", "], ["tok-str", "\"PWA\""], ["tok-punc", ", "], ["tok-str", "\"tested\""], ["tok-punc", ", "], ["tok-str", "\"CI/CD\""], ["tok-punc", "],"], ["", "\n"],
       ["", "  "], ["tok-prop", "status"], ["tok-punc", ": "], ["tok-str", "\"open_to_opportunities\""], ["tok-punc", ","], ["", "\n"],
       ["", "  "], ["tok-prop", "bootcamp"], ["tok-punc", ": "], ["tok-str", "\"RI7 Coding Bootcamp\""], ["", "\n"],
       ["tok-punc", "};"]
@@ -183,18 +184,86 @@
     });
   }
 
-  /* ---------- Contact form ---------- */
+  /* ---------- Contact form (Web3Forms) ---------- */
   var form = document.getElementById("contact-form");
   var success = document.getElementById("form-success");
+  var errorBox = document.getElementById("form-error");
+  var errorText = document.getElementById("form-error-text");
+  var submitBtn = document.getElementById("form-submit");
+  var submitLabel = document.getElementById("form-submit-label");
+
+  var ENDPOINT = "https://api.web3forms.com/submit";
+  var KEY_PLACEHOLDER = "REMPLACER_PAR_VOTRE_CLE_WEB3FORMS";
+  var FALLBACK_EMAIL = "yanniss.27@hotmail.fr";
+
   if (form) {
+    var hideMessages = function () {
+      if (success) success.classList.remove("show");
+      if (errorBox) errorBox.classList.remove("show");
+    };
+    var showError = function (msg) {
+      if (!errorBox) return;
+      if (errorText) errorText.textContent = msg;
+      errorBox.classList.add("show");
+    };
+    var setLoading = function (on) {
+      if (!submitBtn) return;
+      submitBtn.disabled = on;
+      if (submitLabel) submitLabel.textContent = on ? "Envoi en cours…" : "Envoyer le message";
+    };
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      hideMessages();
       if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (success) {
-        success.classList.add("show");
-        if (window.lucide) window.lucide.createIcons();
+
+      // Fail loudly rather than pretending the message was sent.
+      var keyField = form.querySelector('input[name="access_key"]');
+      if (!keyField || !keyField.value || keyField.value === KEY_PLACEHOLDER) {
+        showError("Le formulaire n'est pas encore configuré. Écrivez-moi directement à " + FALLBACK_EMAIL + ".");
+        if (window.console) console.warn("[contact] Clé Web3Forms manquante — voir index.html, input[name=access_key].");
+        return;
       }
-      form.reset();
+
+      // Objet dynamique : rend la boîte de réception scannable d'un coup d'œil.
+      var subjectField = form.querySelector('input[name="subject"]');
+      var nameInput = document.getElementById("name");
+      if (subjectField && nameInput) {
+        var sender = nameInput.value.trim().replace(/\s+/g, " ").slice(0, 60);
+        subjectField.value = sender
+          ? "Nouveau message de " + sender
+          : "Nouveau message depuis votre portfolio";
+      }
+
+      setLoading(true);
+      fetch(ENDPOINT, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form)
+      })
+        .then(function (res) {
+          return res.json().catch(function () { return {}; }).then(function (data) {
+            return { ok: res.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          setLoading(false);
+          if (result.ok && result.data && result.data.success) {
+            if (success) success.classList.add("show");
+            form.reset();
+          } else {
+            // Le message de l'API est technique et en anglais : il va en console,
+            // le visiteur reçoit une phrase claire avec une porte de sortie.
+            if (window.console && result.data && result.data.message) {
+              console.warn("[contact] Web3Forms:", result.data.message);
+            }
+            showError("L'envoi a échoué. Réessayez, ou écrivez-moi directement à " + FALLBACK_EMAIL + ".");
+          }
+        })
+        .catch(function () {
+          setLoading(false);
+          showError("Connexion impossible. Vérifiez votre réseau ou écrivez-moi à " + FALLBACK_EMAIL + ".");
+        });
     });
   }
 })();

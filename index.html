@@ -4,7 +4,32 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BOUZID Yanniss — Développeur Full-Stack</title>
-  <meta name="description" content="Portfolio de BOUZID Yanniss, développeur web full-stack. APIs dynamiques, applications web interactives et expériences utilisateur modernes (Node.js, Express, MongoDB, PHP, JavaScript)." />
+  <meta name="description" content="Portfolio de BOUZID Yanniss, développeur web full-stack. Applications temps réel, PWA hors-ligne et APIs dynamiques, testées et déployées en continu (JavaScript, Node.js, Supabase/PostgreSQL, PHP, Playwright, GitHub Actions)." />
+  <link rel="canonical" href="https://yanniss13.github.io/portfolio/" />
+  <meta name="author" content="BOUZID Yanniss" />
+  <meta name="theme-color" content="#0b1326" />
+
+  <!-- ============================= ICÔNES ============================= -->
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png" />
+
+  <!-- ============================= PARTAGE (Open Graph / Twitter) =============================
+       Les URL doivent être absolues : LinkedIn, X et Slack ne résolvent pas les chemins relatifs. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:site_name" content="BOUZID Yanniss" />
+  <meta property="og:url" content="https://yanniss13.github.io/portfolio/" />
+  <meta property="og:title" content="BOUZID Yanniss — Développeur Web Full-Stack" />
+  <meta property="og:description" content="Applications temps réel, PWA hors-ligne et APIs testées. Node.js, Supabase/PostgreSQL, Playwright, CI/CD." />
+  <meta property="og:image" content="https://yanniss13.github.io/portfolio/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BOUZID Yanniss, développeur web full-stack — Node.js, Supabase, PostgreSQL, PWA, Playwright, CI/CD" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BOUZID Yanniss — Développeur Web Full-Stack" />
+  <meta name="twitter:description" content="Applications temps réel, PWA hors-ligne et APIs testées. Node.js, Supabase/PostgreSQL, Playwright, CI/CD." />
+  <meta name="twitter:image" content="https://yanniss13.github.io/portfolio/assets/img/og-image.png" />
 
   <!-- ============================= FONTS ============================= -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -90,6 +115,7 @@
           <div class="hero__cta reveal" data-delay="3">
             <a class="btn btn--primary" href="#projects">Voir mes projets <i data-lucide="arrow-right"></i></a>
             <a class="btn btn--ghost" href="#contact">Me contacter <i data-lucide="mail"></i></a>
+            <a class="btn btn--ghost" href="./assets/CV-BOUZID-Yanniss.pdf" download="CV-BOUZID-Yanniss.pdf">Mon CV <i data-lucide="download"></i></a>
           </div>
         </div>
 
@@ -111,7 +137,7 @@
           <svg class="about__monogram" viewBox="0 0 48 48" aria-hidden="true"><use href="#yb-logo" /></svg>
           <ul class="about__facts">
             <li><strong>Spécialisation —</strong> Développement Web Full-Stack</li>
-            <li><strong>Stack —</strong> JavaScript, Node.js, PHP</li>
+            <li><strong>Stack —</strong> JavaScript, Node.js, PHP, Supabase</li>
             <li><strong>Bootcamp —</strong> RI7 Coding Bootcamp</li>
             <li><strong>Statut —</strong> Ouvert aux opportunités</li>
           </ul>
@@ -126,14 +152,15 @@
           <p class="about__text reveal" data-delay="2">
             Développeur passionné actuellement en formation intensive (bootcamp), spécialisé dans les
             écosystèmes front-end et back-end. Je m'épanouis en traduisant des besoins complexes en
-            solutions digitales élégantes, fonctionnelles et performantes. Mon approche combine une base
-            solide dans les technologies web fondamentales avec une volonté constante d'apprendre et
-            d'adopter des frameworks modernes.
+            solutions digitales élégantes, fonctionnelles et performantes. Au-delà du code qui fonctionne,
+            je m'attache à ce qui le rend fiable : une architecture en couches lisible, une suite de tests
+            automatisés et un déploiement continu — les pratiques que j'ai mises en œuvre sur NOVA, mon
+            application collaborative temps réel.
           </p>
           <div class="stats reveal" data-delay="3">
-            <div class="stat"><div class="stat__num">04</div><span class="stat__label">Projets phares</span></div>
-            <div class="stat"><div class="stat__num">02</div><span class="stat__label">Langages serveur</span></div>
-            <div class="stat"><div class="stat__num">10+</div><span class="stat__label">Technologies</span></div>
+            <div class="stat"><div class="stat__num">05</div><span class="stat__label">Projets phares</span></div>
+            <div class="stat"><div class="stat__num">70</div><span class="stat__label">Fichiers de test</span></div>
+            <div class="stat"><div class="stat__num">15+</div><span class="stat__label">Technologies</span></div>
             <div class="stat"><div class="stat__num">01</div><span class="stat__label">Bootcamp intensif</span></div>
           </div>
         </div>
@@ -148,6 +175,107 @@
         </div>
 
         <div class="projects__grid">
+          <!-- Featured — NOVA (Confrérie 7DS) -->
+          <article class="card card--featured reveal">
+            <div class="thumb thumb--nova thumb--shot">
+              <span class="thumb__tag">// nova</span>
+              <svg class="thumb__art nova-art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <!-- Two guild members editing the same team, live -->
+                <g fill="none" stroke="#00dbe9" stroke-width="1.6" opacity=".75">
+                  <circle cx="30" cy="32" r="11" />
+                  <circle cx="290" cy="32" r="11" />
+                </g>
+                <g fill="rgba(0,240,255,.75)">
+                  <circle cx="30" cy="29" r="3.4" /><circle cx="290" cy="29" r="3.4" />
+                </g>
+                <g fill="none" stroke="rgba(0,240,255,.7)" stroke-width="1.6" stroke-linecap="round">
+                  <path d="M25 39 q5 4 10 0" /><path d="M285 39 q5 4 10 0" />
+                </g>
+
+                <!-- Realtime sync channel -->
+                <line x1="45" y1="32" x2="275" y2="32" stroke="rgba(0,240,255,.22)" stroke-width="1.3" stroke-dasharray="4 5" />
+                <circle class="nova-pulse" cx="45" cy="32" r="3.6" fill="#00dbe9" />
+
+                <!-- Team of 4 : portrait + weapon / armour / jewellery pips -->
+                <g class="nova-slots">
+                  <g class="nova-slot" transform="translate(26,62)">
+                    <rect width="58" height="82" rx="9" fill="rgba(0,240,255,.05)" stroke="rgba(0,240,255,.34)" stroke-width="1.2" />
+                    <circle cx="29" cy="27" r="13" fill="none" stroke="#00dbe9" stroke-width="1.6" opacity=".8" />
+                    <circle cx="29" cy="23" r="4.4" fill="rgba(0,240,255,.7)" />
+                    <path d="M21 34 q8 7 16 0" fill="none" stroke="rgba(0,240,255,.7)" stroke-width="1.6" stroke-linecap="round" />
+                    <g fill="rgba(220,184,255,.6)">
+                      <rect x="9" y="55" width="12" height="6" rx="3" />
+                      <rect x="23" y="55" width="12" height="6" rx="3" />
+                      <rect x="37" y="55" width="12" height="6" rx="3" />
+                    </g>
+                    <rect x="9" y="67" width="40" height="5" rx="2.5" fill="rgba(0,240,255,.32)" />
+                  </g>
+                  <g class="nova-slot" transform="translate(96,62)">
+                    <rect width="58" height="82" rx="9" fill="rgba(0,240,255,.05)" stroke="rgba(0,240,255,.34)" stroke-width="1.2" />
+                    <circle cx="29" cy="27" r="13" fill="none" stroke="#00dbe9" stroke-width="1.6" opacity=".8" />
+                    <circle cx="29" cy="23" r="4.4" fill="rgba(0,240,255,.7)" />
+                    <path d="M21 34 q8 7 16 0" fill="none" stroke="rgba(0,240,255,.7)" stroke-width="1.6" stroke-linecap="round" />
+                    <g fill="rgba(220,184,255,.6)">
+                      <rect x="9" y="55" width="12" height="6" rx="3" />
+                      <rect x="23" y="55" width="12" height="6" rx="3" />
+                      <rect x="37" y="55" width="12" height="6" rx="3" />
+                    </g>
+                    <rect x="9" y="67" width="40" height="5" rx="2.5" fill="rgba(0,240,255,.32)" />
+                  </g>
+                  <g class="nova-slot" transform="translate(166,62)">
+                    <rect width="58" height="82" rx="9" fill="rgba(0,240,255,.05)" stroke="rgba(0,240,255,.34)" stroke-width="1.2" />
+                    <circle cx="29" cy="27" r="13" fill="none" stroke="#00dbe9" stroke-width="1.6" opacity=".8" />
+                    <circle cx="29" cy="23" r="4.4" fill="rgba(0,240,255,.7)" />
+                    <path d="M21 34 q8 7 16 0" fill="none" stroke="rgba(0,240,255,.7)" stroke-width="1.6" stroke-linecap="round" />
+                    <g fill="rgba(220,184,255,.6)">
+                      <rect x="9" y="55" width="12" height="6" rx="3" />
+                      <rect x="23" y="55" width="12" height="6" rx="3" />
+                      <rect x="37" y="55" width="12" height="6" rx="3" />
+                    </g>
+                    <rect x="9" y="67" width="40" height="5" rx="2.5" fill="rgba(0,240,255,.32)" />
+                  </g>
+                  <g class="nova-slot" transform="translate(236,62)">
+                    <rect width="58" height="82" rx="9" fill="rgba(0,240,255,.05)" stroke="rgba(0,240,255,.34)" stroke-width="1.2" />
+                    <circle cx="29" cy="27" r="13" fill="none" stroke="#00dbe9" stroke-width="1.6" opacity=".8" />
+                    <circle cx="29" cy="23" r="4.4" fill="rgba(0,240,255,.7)" />
+                    <path d="M21 34 q8 7 16 0" fill="none" stroke="rgba(0,240,255,.7)" stroke-width="1.6" stroke-linecap="round" />
+                    <g fill="rgba(220,184,255,.6)">
+                      <rect x="9" y="55" width="12" height="6" rx="3" />
+                      <rect x="23" y="55" width="12" height="6" rx="3" />
+                      <rect x="37" y="55" width="12" height="6" rx="3" />
+                    </g>
+                    <rect x="9" y="67" width="40" height="5" rx="2.5" fill="rgba(0,240,255,.32)" />
+                  </g>
+                </g>
+              </svg>
+              <img class="thumb__shot" src="./assets/img/projects/nova.jpg" alt="Interface de NOVA : le wiki de l'application, avec la grille des 25 héros du jeu, la barre de recherche et les filtres par élément, arme, rôle et rareté." loading="lazy" width="1280" height="720" />
+              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+            </div>
+            <div class="card__body">
+              <span class="card__badge"><i data-lucide="sparkles"></i> Projet phare</span>
+              <h3 class="card__title">NOVA — Team Builder collaboratif</h3>
+              <p class="card__desc">
+                Application web collaborative permettant aux membres d'une guilde de composer, équiper et
+                partager leurs équipes de raid. Architecture ES modules en couches, données synchronisées
+                en direct entre tous les membres, et fonctionnement complet hors-ligne.
+              </p>
+              <ul class="card__highlights">
+                <li><i data-lucide="radio"></i> Synchronisation temps réel multi-utilisateurs via Supabase Realtime</li>
+                <li><i data-lucide="wifi-off"></i> PWA installable — reste utilisable sans connexion</li>
+                <li><i data-lucide="shield-check"></i> 70 fichiers de test : unitaires, schémas SQL et E2E Playwright</li>
+                <li><i data-lucide="git-branch"></i> Intégration et déploiement continus via GitHub Actions</li>
+              </ul>
+              <div class="chips">
+                <span class="chip">JavaScript</span><span class="chip">ES Modules</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Realtime</span><span class="chip">PWA</span><span class="chip">Playwright</span><span class="chip">GitHub Actions</span>
+              </div>
+              <div class="card__links">
+                <a class="card__link card__link--accent" href="./projets/nova.html" aria-label="Étude de cas technique — NOVA"><i data-lucide="file-text"></i> Étude de cas</a>
+                <a class="card__link" href="https://yanniss13.github.io/NOVA/" target="_blank" rel="noopener noreferrer" aria-label="Démo live — NOVA"><i data-lucide="external-link"></i> Démo live</a>
+                <a class="card__link" href="https://github.com/yanniss13/NOVA" target="_blank" rel="noopener noreferrer" aria-label="Dépôt GitHub — NOVA"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg> GitHub</a>
+              </div>
+            </div>
+          </article>
+
           <!-- Project 1 — Réseau Social -->
           <article class="card reveal">
             <div class="thumb thumb--graph">
@@ -165,6 +293,8 @@
                   <circle cx="70" cy="130" r="9" /><circle cx="250" cy="128" r="9" />
                 </g>
               </svg>
+              <!-- Pas de capture ici : le fil affiche les publications et pseudos de vrais
+                   utilisateurs, qui n'ont pas consenti à figurer sur ce portfolio. -->
               <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
             </div>
             <div class="card__body">
@@ -174,7 +304,7 @@
                 <span class="chip">PHP</span><span class="chip">MySQL</span><span class="chip">MVC</span>
               </div>
               <div class="card__links">
-                <a class="card__link" href="http://yanniss.gt.tc/Projet_Resaux/public/index.php?action=login" target="_blank" rel="noopener noreferrer" aria-label="Démo live — Application Réseau Social"><i data-lucide="external-link"></i> Démo live</a>
+                <a class="card__link" href="https://yanniss.gt.tc/Projet_Resaux/public/index.php?action=login" target="_blank" rel="noopener noreferrer" aria-label="Démo live — Application Réseau Social"><i data-lucide="external-link"></i> Démo live</a>
                 <a class="card__link" href="https://github.com/yanniss13/Projet_Resaux.git" target="_blank" rel="noopener noreferrer" aria-label="Dépôt GitHub — Application Réseau Social"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg> GitHub</a>
               </div>
             </div>
@@ -182,7 +312,7 @@
 
           <!-- Project 2 — API Recettes -->
           <article class="card reveal" data-delay="1">
-            <div class="thumb thumb--api">
+            <div class="thumb thumb--api thumb--shot">
               <span class="thumb__tag">// recipes-api</span>
               <div class="api-lines" aria-hidden="true">
                 <div><span class="m get">GET</span> /api/recipes</div>
@@ -190,6 +320,7 @@
                 <div><span class="m put">PUT</span> /api/recipes/:id</div>
                 <div class="res">→ 200 OK · application/json</div>
               </div>
+              <img class="thumb__shot" src="./assets/img/projects/api-recettes.jpg" alt="Interface de l'application API Recettes : page d'accueil sombre avec barre de recherche et filtres par catégorie et difficulté." loading="lazy" width="1280" height="720" />
               <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
             </div>
             <div class="card__body">
@@ -207,9 +338,16 @@
 
           <!-- Project 3 — Game of Life (live canvas) -->
           <article class="card reveal">
-            <div class="thumb thumb--gol">
+            <div class="thumb thumb--gol thumb--shot">
               <span class="thumb__tag">// conway.js</span>
               <canvas id="gol-canvas"></canvas>
+              <!-- Animation réelle de la démo en ligne. Repli sur une image fixe
+                   pour qui a demandé la réduction des animations : un GIF joue
+                   en boucle sans que CSS puisse l'arrêter. -->
+              <picture>
+                <source media="(prefers-reduced-motion: reduce)" srcset="./assets/img/projects/game-of-life.png" />
+                <img class="thumb__shot" src="./assets/img/projects/game-of-life.gif" alt="Le Jeu de la vie en cours d'exécution : les cellules vertes évoluent de génération en génération sur la grille, avec les boutons Pause, Étape, Aléatoire et Vider." loading="lazy" width="640" height="360" />
+              </picture>
               <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
             </div>
             <div class="card__body">
@@ -227,7 +365,7 @@
 
           <!-- Project 4 — Jeux Classiques -->
           <article class="card reveal" data-delay="1">
-            <div class="thumb thumb--board">
+            <div class="thumb thumb--board thumb--shot">
               <span class="thumb__tag">// classic-games</span>
               <div class="ttt" aria-hidden="true">
                 <span><svg viewBox="0 0 24 24" fill="none" stroke="#00dbe9" stroke-width="3" stroke-linecap="round"><path d="M5 5 L19 19 M19 5 L5 19" /></svg></span>
@@ -240,6 +378,7 @@
                 <span></span>
                 <span><svg viewBox="0 0 24 24" fill="none" stroke="#00dbe9" stroke-width="3" stroke-linecap="round"><path d="M5 5 L19 19 M19 5 L5 19" /></svg></span>
               </div>
+              <img class="thumb__shot" src="./assets/img/projects/morpion.jpg" alt="Le jeu Morpion x Puissance 4 : plateau de jeu sur un fond synthwave, avec les sélecteurs de mode et de taille de grille." loading="lazy" width="1280" height="720" />
               <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
             </div>
             <div class="card__body">
@@ -274,7 +413,7 @@
               <span class="level level--ok">Maîtrisé</span>
             </div>
             <ul class="skill-list">
-              <li>HTML5</li><li>CSS3</li><li>Tailwind CSS</li><li>JavaScript (ES6+)</li><li>DOM API</li>
+              <li>HTML5</li><li>CSS3</li><li>Tailwind CSS</li><li>JavaScript (ES6+)</li><li>ES Modules</li><li>DOM API</li>
             </ul>
           </div>
 
@@ -285,7 +424,7 @@
               <span class="level level--wip">En progression</span>
             </div>
             <ul class="skill-list">
-              <li>Node.js</li><li>Express.js</li><li>PHP</li><li>Architecture MVC</li><li>REST APIs</li>
+              <li>Node.js</li><li>Express.js</li><li>PHP</li><li>Architecture MVC</li><li>REST APIs</li><li>Realtime / WebSockets</li>
             </ul>
           </div>
 
@@ -296,7 +435,7 @@
               <span class="level level--wip">En progression</span>
             </div>
             <ul class="skill-list">
-              <li>MongoDB</li><li>MySQL</li><li>SQL</li>
+              <li>PostgreSQL</li><li>Supabase</li><li>MongoDB</li><li>MySQL</li><li>SQL</li>
             </ul>
           </div>
 
@@ -308,6 +447,28 @@
             </div>
             <ul class="skill-list">
               <li>Git &amp; GitHub</li><li>VS Code</li><li>Laragon</li><li>Postman / Thunder Client</li>
+            </ul>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-card__head">
+              <span class="skill-card__icon"><i data-lucide="shield-check"></i></span>
+              <h3 class="skill-card__title">Qualité &amp; Tests</h3>
+              <span class="level level--wip">En progression</span>
+            </div>
+            <ul class="skill-list">
+              <li>Playwright (E2E)</li><li>Tests unitaires</li><li>Validation de schémas SQL</li><li>Accessibilité</li><li>Responsive mobile-first</li>
+            </ul>
+          </div>
+
+          <div class="skill-card reveal" data-delay="1">
+            <div class="skill-card__head">
+              <span class="skill-card__icon"><i data-lucide="rocket"></i></span>
+              <h3 class="skill-card__title">DevOps &amp; Déploiement</h3>
+              <span class="level level--wip">En progression</span>
+            </div>
+            <ul class="skill-list">
+              <li>GitHub Actions (CI/CD)</li><li>GitHub Pages</li><li>PWA / Service Worker</li><li>Stratégies de cache offline</li>
             </ul>
           </div>
         </div>
@@ -323,6 +484,13 @@
 
         <div class="contact__grid">
           <form class="form reveal" id="contact-form" novalidate>
+            <!-- Clé publique Web3Forms — destinée à être visible côté client (gérée sur web3forms.com) -->
+            <input type="hidden" name="access_key" value="63c4d1bf-bd47-418b-8d6e-4855c5fda08a" />
+            <input type="hidden" name="subject" value="Nouveau message depuis votre portfolio" />
+            <input type="hidden" name="from_name" value="Portfolio BOUZID Yanniss" />
+            <!-- Piège à robots : invisible et ignoré par les humains -->
+            <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
             <div class="form__row">
               <div class="field">
                 <label for="name">Nom</label>
@@ -337,9 +505,14 @@
               <label for="message">Votre message</label>
               <textarea id="message" name="message" placeholder="Parlez-moi de votre projet…" required></textarea>
             </div>
-            <button class="btn btn--primary" type="submit">Envoyer le message <i data-lucide="send"></i></button>
+            <button class="btn btn--primary" type="submit" id="form-submit">
+              <span id="form-submit-label">Envoyer le message</span> <i data-lucide="send"></i>
+            </button>
             <p class="form__success" id="form-success" role="status">
-              <i data-lucide="check-circle-2"></i> Merci ! Votre message est prêt à être envoyé.
+              <i data-lucide="check-circle-2"></i> Merci ! Votre message m'a bien été envoyé, je vous réponds vite.
+            </p>
+            <p class="form__error" id="form-error" role="alert">
+              <i data-lucide="alert-circle"></i> <span id="form-error-text"></span>
             </p>
           </form>
 
@@ -348,10 +521,18 @@
               <h3>Restons en contact</h3>
               <p>Intéressé par une collaboration ou vous avez une question ? Retrouvez-moi sur ces plateformes.</p>
             </div>
+            <a class="cv-download" href="./assets/CV-BOUZID-Yanniss.pdf" download="CV-BOUZID-Yanniss.pdf">
+              <span class="cv-download__icon"><i data-lucide="file-text"></i></span>
+              <span class="cv-download__text">
+                <strong>Télécharger mon CV</strong>
+                <span>PDF · 1 page</span>
+              </span>
+              <i data-lucide="download"></i>
+            </a>
             <div class="social">
               <a href="https://github.com/yanniss13" aria-label="Profil GitHub"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg><span>github.com/yanniss13</span></a>
               <a href="https://www.linkedin.com/in/yanniss-bouzid-675b71414/?skipRedirect=true" aria-label="Profil LinkedIn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-linkedin" /></svg><span>linkedin.com/in/yanniss</span></a>
-              <a href="#" aria-label="Envoyer un email"><i data-lucide="mail"></i><span>yanniss.27@hotmail.fr</span></a>
+              <a href="mailto:yanniss.27@hotmail.fr" aria-label="Envoyer un email"><i data-lucide="mail"></i><span>yanniss.27@hotmail.fr</span></a>
             </div>
           </aside>
         </div>
@@ -375,8 +556,10 @@
     </div>
   </footer>
 
-  <!-- ============================= ICONS (Lucide CDN) ============================= -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- ============================= ICONS (Lucide CDN) =============================
+       Version épinglée volontairement : @latest exposerait le site à une rupture
+       d'API en amont, qui ferait disparaître toutes les icônes sans prévenir. -->
+  <script src="https://unpkg.com/lucide@1.31.0/dist/umd/lucide.min.js"></script>
   <script src="./assets/js/script.js"></script>
 </body>
 </html>
