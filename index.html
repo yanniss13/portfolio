@@ -336,7 +336,10 @@
             </div>
           </article>
 
-          <!-- Project 3 — Game of Life (live canvas) -->
+          <!-- Project 3 — Game of Life.
+               Le canvas ci-dessous est une décoration de CETTE page : il rejoue une
+               simulation dans la vignette. Le projet lui-même n'utilise pas Canvas,
+               il rend sa grille en DOM. -->
           <article class="card reveal">
             <div class="thumb thumb--gol thumb--shot">
               <span class="thumb__tag">// conway.js</span>
@@ -352,9 +355,9 @@
             </div>
             <div class="card__body">
               <h3 class="card__title">Game of Life</h3>
-              <p class="card__desc">Implémentation interactive et performante de l'automate cellulaire de Conway, rendu directement dans le navigateur via l'API Canvas.</p>
+              <p class="card__desc">Automate cellulaire de Conway, dont la grille est éditable au clic. L'état est tenu dans un tableau à deux dimensions et rendu en DOM pur : une grille CSS où chaque cellule bascule par simple changement de classe.</p>
               <div class="chips">
-                <span class="chip">JavaScript</span><span class="chip">Algorithme</span>
+                <span class="chip">JavaScript</span><span class="chip">Algorithme</span><span class="chip">DOM API</span><span class="chip">CSS Grid</span>
               </div>
               <div class="card__links">
                 <a class="card__link" href="https://yanniss13.github.io/JeuDeLaVie/" target="_blank" rel="noopener noreferrer" aria-label="Démo live — Game of Life"><i data-lucide="external-link"></i> Démo live</a>
