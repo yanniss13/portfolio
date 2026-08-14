@@ -139,6 +139,30 @@ function mapToPalette(frame, palette) {
   return idx;
 }
 
+/* ---------------- Delta entre images ----------------
+   Le quadrillage occupe tout le cadre et ne bouge jamais : d'une generation a
+   l'autre, seules les cellules qui naissent ou meurent changent, soit environ
+   5 % des pixels. Reecrire les 95 % restants a chaque image est du pur
+   gaspillage. Le GIF sait l'eviter nativement : un index declare transparent
+   signifie « ne touche pas a ce pixel », et la disposition 1 (laisser en
+   place) conserve l'image precedente dessous.
+
+   La comparaison se fait contre l'image precedente COMPLETE, pas contre sa
+   version trouee : avec la disposition 1, l'etat du canevas apres l'image i-1
+   est exactement le contenu plein de i-1. */
+function appliquerDelta(frames, indexTransparent) {
+  let inchanges = 0, total = 0;
+  const pleines = frames.map(f => Buffer.from(f.indices));
+  for (let i = 1; i < frames.length; i++) {
+    const avant = pleines[i - 1], maintenant = frames[i].indices;
+    for (let p = 0; p < maintenant.length; p++) {
+      total++;
+      if (pleines[i][p] === avant[p]) { maintenant[p] = indexTransparent; inchanges++; }
+    }
+  }
+  return total ? inchanges / total : 0;
+}
+
 /* ---------------- LZW (variante GIF) ---------------- */
 function lzwEncode(indices, minCodeSize) {
   const clear = 1 << minCodeSize, eoi = clear + 1;
@@ -179,9 +203,12 @@ function lzwEncode(indices, minCodeSize) {
 }
 
 /* ---------------- Assemblage GIF89a ---------------- */
-function buildGif(frames, palette, delayCs) {
+function buildGif(frames, palette, delayCs, indexTransparent) {
   const w = frames[0].width, h = frames[0].height;
-  let bits = 1; while ((1 << bits) < palette.length) bits++;
+  // L'index transparent occupe une entree de la table : c'est lui, et non le
+  // nombre de couleurs demande, qui fixe la largeur des codes.
+  const entrees = indexTransparent === null ? palette.length : indexTransparent + 1;
+  let bits = 1; while ((1 << bits) < entrees) bits++;
   const gctSize = 1 << bits;
   const parts = [];
   const header = Buffer.alloc(13);
@@ -200,8 +227,14 @@ function buildGif(frames, palette, delayCs) {
 
   for (const f of frames) {
     const gce = Buffer.alloc(8);
-    gce[0] = 0x21; gce[1] = 0xf9; gce[2] = 0x04; gce[3] = 0x04;
-    gce.writeUInt16LE(delayCs, 4); gce[6] = 0; gce[7] = 0;
+    // gce[3] : bits 4-2 = disposition (1 = laisser en place, indispensable
+    // pour que les pixels transparents laissent voir l'image precedente),
+    // bit 0 = drapeau de transparence.
+    gce[0] = 0x21; gce[1] = 0xf9; gce[2] = 0x04;
+    gce[3] = indexTransparent === null ? 0x04 : 0x05;
+    gce.writeUInt16LE(delayCs, 4);
+    gce[6] = indexTransparent === null ? 0 : indexTransparent;
+    gce[7] = 0;
     parts.push(gce);
 
     const desc = Buffer.alloc(10);
@@ -246,7 +279,15 @@ console.log(`  ${palette.length} couleurs retenues`);
 console.log("Indexation...");
 frames = frames.map(f => ({ width: f.width, height: f.height, indices: mapToPalette(f, palette) }));
 
+// L'index transparent se place juste apres les couleurs reelles : aucune
+// teinte n'est sacrifiee, la table s'agrandit seulement d'une entree.
+const indexTransparent = frames.length > 1 ? palette.length : null;
+if (indexTransparent !== null) {
+  const part = appliquerDelta(frames, indexTransparent);
+  console.log(`Delta inter-images : ${(part * 100).toFixed(1)} % de pixels inchanges rendus transparents`);
+}
+
 console.log("Encodage LZW...");
-const gif = buildGif(frames, palette, delayCs);
+const gif = buildGif(frames, palette, delayCs, indexTransparent);
 fs.writeFileSync(outPath, gif);
 console.log(`GIF écrit : ${(gif.length / 1024).toFixed(0)} Ko`);

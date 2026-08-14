@@ -514,9 +514,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 
 /* Capture réelle du projet, révélée au survol par-dessus l'illustration.
    L'illustration porte l'identité du site, la capture prouve que l'app existe. */
-/* `display: contents` : sans lui, <picture> s'intercale dans le flux et
-   l'image perd son positionnement absolu dans la vignette. */
-.thumb picture { display: contents; }
+/* Vaut pour <img> comme pour <video> : object-fit cadre les deux. */
 .thumb__shot {
   position: absolute;
   inset: 0;

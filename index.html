@@ -344,13 +344,20 @@
             <div class="thumb thumb--gol thumb--shot">
               <span class="thumb__tag">// conway.js</span>
               <canvas id="gol-canvas"></canvas>
-              <!-- Animation réelle de la démo en ligne. Repli sur une image fixe
-                   pour qui a demandé la réduction des animations : un GIF joue
-                   en boucle sans que CSS puisse l'arrêter. -->
-              <picture>
-                <source media="(prefers-reduced-motion: reduce)" srcset="./assets/img/projects/game-of-life.png" />
-                <img class="thumb__shot" src="./assets/img/projects/game-of-life.gif" alt="Le Jeu de la vie en cours d'exécution : les cellules vertes évoluent de génération en génération sur la grille, avec les boutons Pause, Étape, Aléatoire et Vider." loading="lazy" width="640" height="360" />
-              </picture>
+              <!-- Animation réelle de la démo en ligne, grille composée à la main
+                   (canon à planeurs, pulsars) plutôt que tirée au hasard : un
+                   remplissage aléatoire ne donne qu'un bruit vert illisible.
+                   MP4 et non GIF : contraint à 8 couleurs, le GIF détruisait le
+                   texte antialiasé du compteur pour 98 Ko en 640x360 ; la vidéo
+                   tient le 1280x720 en 89 Ko. Le vert clair sur bleu sombre est
+                   surtout un écart de luminance, que le 4:2:0 conserve intact.
+                   preload="none" : rien n'est téléchargé tant que personne ne
+                   survole, l'affiche tient l'écran. Lecture pilotée par script.js. -->
+              <video class="thumb__shot" poster="./assets/img/projects/game-of-life.png"
+                     muted loop playsinline preload="none" width="1280" height="720"
+                     aria-label="Le Jeu de la vie en cours d'exécution : sur la grille sombre, un canon à planeurs et deux pulsars verts évoluent de génération en génération, sous les boutons Démarrer, Étape, Aléatoire et Vider.">
+                <source src="./assets/video/game-of-life.mp4" type="video/mp4" />
+              </video>
               <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
             </div>
             <div class="card__body">

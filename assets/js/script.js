@@ -131,6 +131,30 @@
     });
   }
 
+  /* ---------- Vignettes vidéo ----------
+     La capture ne tourne qu'au survol. Sans ça le navigateur décoderait en
+     continu une vidéo que personne ne voit : la vignette reste à opacity 0
+     tant que la carte n'est pas survolée.
+     Sous prefers-reduced-motion, la lecture n'est jamais lancée et l'affiche
+     tient lieu d'image fixe — ce qu'un GIF ne permettait pas, puisque CSS ne
+     peut pas l'arrêter : il fallait livrer un PNG de repli séparé. */
+  document.querySelectorAll(".thumb video").forEach(function (video) {
+    var carte = video.closest(".card");
+    if (!carte) return;
+    function jouer() {
+      if (reduceMotion) return;
+      var p = video.play();
+      // Lecture refusée (politique d'autoplay, mode économie de données) :
+      // l'affiche reste affichée, il n'y a rien à rattraper.
+      if (p && p.catch) p.catch(function () {});
+    }
+    function arreter() { video.pause(); }
+    carte.addEventListener("mouseenter", jouer);
+    carte.addEventListener("mouseleave", arreter);
+    carte.addEventListener("focusin", jouer);
+    carte.addEventListener("focusout", arreter);
+  });
+
   /* ---------- Scroll reveal ---------- */
   var reveals = document.querySelectorAll(".reveal");
   if (reduceMotion || !("IntersectionObserver" in window)) {
