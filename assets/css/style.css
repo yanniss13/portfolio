@@ -639,6 +639,17 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 @media (min-width: 769px) {
   .card--featured { flex-direction: row; align-items: stretch; }
   .card--featured .thumb { flex: 1 1 50%; aspect-ratio: auto; }
+  /* La vignette de la carte phare s'étire sur la hauteur du texte : une capture
+     16/9 y serait rognée et agrandie à l'excès. On l'affiche entière, centrée,
+     posée sur le fond dégradé de la vignette. */
+  .card--featured .thumb__shot {
+    object-fit: contain;
+    object-position: center;
+    padding: clamp(.75rem, 1.4vw, 1.25rem);
+    /* drop-shadow suit le contour réel de l'image rendue, contrairement à
+       box-shadow qui ombrerait toute la boîte, bandes vides comprises. */
+    filter: drop-shadow(0 16px 34px rgba(0, 0, 0, .55));
+  }
   .card--featured .card__body { flex: 1 1 50%; justify-content: center; padding: clamp(1.75rem, 2.5vw, 2.5rem); }
   .card--featured .card__title { font-size: 1.7rem; }
   .card--featured .card__desc { flex: 0 1 auto; }
@@ -646,6 +657,11 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 
 /* --- Thumb motifs --- */
 .thumb__art { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* L'illustration s'efface pendant que la capture apparaît : sans ça elle
+   transparaît derrière les captures affichées en entier (carte phare). */
+.thumb--shot .thumb__art { transition: opacity 320ms var(--ease); }
+.card:hover .thumb--shot .thumb__art,
+.card:focus-within .thumb--shot .thumb__art { opacity: 0; }
 .thumb--graph { background: radial-gradient(130% 120% at 80% 10%, #1a2746, #0a1124); }
 .thumb--api { background: linear-gradient(160deg, #11203a, #070f22); }
 .thumb--gol { background: #050b1c; }
