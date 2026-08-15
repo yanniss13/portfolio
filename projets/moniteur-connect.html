@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoniteurConnect — Étude de cas | BOUZID Yanniss</title>
+  <meta name="description" content="Étude de cas de MoniteurConnect : deux stratégies de jeton selon le risque, validation des fichiers par leur contenu, et chaîne de signature scellée par empreinte." />
+  <link rel="canonical" href="https://yanniss13.github.io/portfolio/projets/moniteur-connect.html" />
+  <meta name="theme-color" content="#0b1326" />
+
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta property="og:url" content="https://yanniss13.github.io/portfolio/projets/moniteur-connect.html" />
+  <meta property="og:title" content="MoniteurConnect — Étude de cas technique" />
+  <meta property="og:description" content="Trois décisions techniques sur une plateforme qui manipule des pièces d'identité et des contrats : jetons, validation de fichiers, signature électronique." />
+  <meta property="og:image" content="https://yanniss13.github.io/portfolio/assets/img/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@500&family=Sora:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+
+  <link rel="stylesheet" href="../assets/css/case-study.css" />
+</head>
+
+<body>
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <linearGradient id="ybGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#00dbe9" /><stop offset="1" stop-color="#dcb8ff" />
+      </linearGradient>
+      <symbol id="yb-logo" viewBox="0 0 48 48">
+        <rect x="3" y="3" width="42" height="42" rx="13" fill="none" stroke="url(#ybGrad)" stroke-width="2" opacity=".55" />
+        <path d="M11 14 L18 23 L18 34 M25 14 L18 23" fill="none" stroke="url(#ybGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M28 14 L28 34 M28 14 L35 14 L38 17 L38 20 L35 23 L28 23 M28 23 L36 23 L39 26 L39 31 L36 34 L28 34" fill="none" stroke="url(#ybGrad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.07.78 2.16 0 1.56-.01 2.82-.01 3.2 0 .31.21.68.8.56C20.71 21.39 24 17.08 24 12 24 5.73 18.27.5 12 .5z"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a class="brand" href="../index.html" aria-label="BOUZID Yanniss — accueil">
+        <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#yb-logo" /></svg>
+        <span class="brand__text">BOUZID<span class="brand__text-dim"> Yanniss</span></span>
+      </a>
+      <a class="btn btn--ghost" href="../index.html#projects">Tous les projets</a>
+    </div>
+  </header>
+
+  <main>
+    <article class="case section">
+      <div class="container">
+        <a class="case__back" href="../index.html#projects"><i data-lucide="arrow-left"></i> Retour aux projets</a>
+
+        <p class="eyebrow">Étude de cas</p>
+        <h1 class="case__title">MoniteurConnect — trois décisions<br class="hide-sm" /> pour des données <span class="grad">qu'on ne peut pas perdre</span></h1>
+
+        <p class="case__lede">
+          La plateforme relie les auto-écoles aux moniteurs indépendants. Un moniteur y dépose sa
+          pièce d'identité, son permis et son autorisation d'enseigner, puis signe un contrat de
+          travail — sans jamais créer de compte. Trois contraintes de sécurité en découlent, et
+          chacune a imposé une décision. Voici lesquelles, et pourquoi.
+        </p>
+
+        <div class="case__meta">
+          <a class="card__link" href="https://yanniss-bouzid.ri7.tech/" target="_blank" rel="noopener noreferrer"><i data-lucide="external-link"></i> Démo live</a>
+          <a class="card__link" href="https://github.com/yanniss13/ProjetFamilleAuto-Ecole" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg> Code source</a>
+        </div>
+
+        <div class="figures">
+          <div><div class="figure__num">11</div><span class="figure__label">Lots livrés</span></div>
+          <div><div class="figure__num">4</div><span class="figure__label">Pièces contrôlées</span></div>
+          <div><div class="figure__num">0</div><span class="figure__label">Compte pour postuler</span></div>
+          <div><div class="figure__num">180</div><span class="figure__label">Jours avant purge</span></div>
+        </div>
+
+        <!-- ===================== DÉCISION 1 ===================== -->
+        <section class="decision">
+          <p class="decision__index">01</p>
+          <h2 class="decision__title">Deux stratégies de jeton, parce qu'il y a deux risques différents</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Trois parcours reposent sur un lien reçu par email : vérifier son adresse,
+                réinitialiser son mot de passe, et suivre sa candidature sans compte. Le réflexe
+                est d'appliquer la même recette aux trois.
+              </p>
+              <p>
+                Sauf qu'ils ne protègent pas la même chose. Un lien de réinitialisation
+                <strong>donne le contrôle d'un compte</strong> ; un lien de suivi n'affiche qu'un
+                statut. Les traiter pareil, c'est soit sous-protéger le premier, soit s'interdire
+                une fonctionnalité sur le second.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                Une fuite de la base ne permet pas de forger un lien de réinitialisation : elle ne
+                contient que des empreintes, et une empreinte ne se remonte pas.
+              </p>
+              <p>
+                Le lien de suivi, lui, reste reconstructible côté serveur — ce qui permet de le
+                rappeler dans chaque email de relance, sans jamais demander au candidat de le
+                conserver.
+              </p>
+            </div>
+          </div>
+
+          <div class="layers">
+            <div class="layer">
+              <code>vérification<br />réinitialisation</code>
+              <span>Le jeton part <strong>en clair</strong> dans l'email, mais seule son empreinte SHA-256 est stockée — exactement comme un mot de passe.</span>
+            </div>
+            <div class="layer">
+              <code>suivi candidat</code>
+              <span>Jeton opaque de 32 octets, <strong>stocké tel quel</strong>. Il ne révèle qu'un statut déjà connu du candidat, et doit pouvoir être réinséré dans les emails.</span>
+            </div>
+            <div class="layer layer--rule">
+              <span>La règle : on ne hashe pas par principe, on hashe quand la valeur donne un pouvoir qu'on ne veut pas voir fuiter.</span>
+            </div>
+          </div>
+
+          <p style="margin-top:1.5rem">
+            Ce choix est écrit dans le code, pas seulement appliqué : le module de jetons expose
+            deux fonctions distinctes, chacune commentée par sa raison d'être. Le prochain
+            développeur qui ajoute un lien par email doit choisir — et le simple fait de devoir
+            choisir l'oblige à se poser la question du risque.
+          </p>
+        </section>
+
+        <!-- ===================== DÉCISION 2 ===================== -->
+        <section class="decision">
+          <p class="decision__index">02</p>
+          <h2 class="decision__title">Vérifier ce qu'un fichier contient, pas ce qu'il prétend être</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Quatre pièces sont téléversées à chaque candidature : CV, pièce d'identité, permis
+                et autorisation d'enseigner. Le navigateur annonce un type pour chacune.
+              </p>
+              <p>
+                Ce type est <strong>déclaratif</strong>. Il est envoyé par le client, donc
+                falsifiable : n'importe qui peut présenter un exécutable en affirmant que c'est un
+                PDF. Se fier au champ annoncé, c'est laisser l'attaquant décrire lui-même ce qu'il
+                dépose.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                Un fichier dont le contenu ne correspond pas à son extension est
+                <strong>supprimé du disque</strong> et retiré de la requête. Le contrôleur le voit
+                alors comme manquant et affiche une erreur de validation claire.
+              </p>
+              <p>
+                Le rejet ne dépend plus de la bonne foi du client.
+              </p>
+            </div>
+          </div>
+
+          <p style="margin-top:1.5rem">
+            La vérification lit les premiers octets du fichier écrit et les compare à la signature
+            binaire attendue — <code>%PDF</code> pour un PDF, la séquence de huit octets propre au
+            PNG, celle du JPEG. C'est le contenu réel qui décide.
+          </p>
+
+          <p class="quote">
+            // Le mimetype annoncé par le client est déclaratif et falsifiable :<br />
+            // on vérifie le CONTENU réel du fichier.<br />
+            const SIGNATURES = {<br />
+            &nbsp;&nbsp;'.pdf': [Buffer.from('%PDF')],<br />
+            &nbsp;&nbsp;'.jpg': [Buffer.from([0xff, 0xd8, 0xff])],<br />
+            &nbsp;&nbsp;'.png': [Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])],<br />
+            };
+            <cite>src/middlewares/upload.js</cite>
+          </p>
+
+          <p style="margin-top:1.5rem">
+            Trois autres règles encadrent le même flux, chacune fermant une porte connue : le nom
+            du fichier est <strong>régénéré</strong> côté serveur — jamais celui fourni par le
+            client, qui pourrait contenir un chemin ; l'extension est <strong>dérivée du type</strong>
+            plutôt que lue dans le nom ; et tout est écrit dans un dossier privé, jamais sous le
+            répertoire servi publiquement. Une pièce d'identité ne doit pas être atteignable par
+            URL, même en devinant son nom.
+          </p>
+        </section>
+
+        <!-- ===================== DÉCISION 3 ===================== -->
+        <section class="decision">
+          <p class="decision__index">03</p>
+          <h2 class="decision__title">Sceller le contrat proposé dans le contrat signé</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                L'école rédige les termes, le PDF part au candidat, le candidat signe. Entre les
+                deux, rien n'empêche techniquement que le document change.
+              </p>
+              <p>
+                Une signature manuscrite scannée en bas d'un PDF ne prouve rien sur le
+                <strong>contenu</strong> : elle prouve seulement que quelqu'un a dessiné dans un
+                cadre. Si le candidat conteste plus tard les termes, ni lui ni l'école ne peuvent
+                démontrer ce qui a réellement été présenté.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                Le candidat voit <strong>l'empreinte du document</strong> sur la page de signature,
+                avant de signer. Ce n'est plus « j'accepte un PDF » mais « j'accepte
+                <em>ce</em> PDF ».
+              </p>
+              <p>
+                Et cette empreinte est <strong>recopiée dans le document final</strong>. Le contrat
+                signé porte donc en lui la preuve de ce qui avait été proposé.
+              </p>
+            </div>
+          </div>
+
+          <div class="layers">
+            <div class="layer">
+              <code>1 · proposition</code>
+              <span>L'école fige les termes. Le PDF est généré, son empreinte SHA-256 calculée et stockée.</span>
+            </div>
+            <div class="layer">
+              <code>2 · présentation</code>
+              <span>Le candidat ouvre son lien de suivi. L'empreinte lui est <strong>affichée</strong>, par groupes de huit caractères pour rester lisible.</span>
+            </div>
+            <div class="layer">
+              <code>3 · contreseing</code>
+              <span>Il signe. Un PDF final est bâti : les deux signatures, les deux horodatages, et l'empreinte du document proposé.</span>
+            </div>
+            <div class="layer">
+              <code>4 · scellement</code>
+              <span>L'empreinte du PDF final est calculée à son tour et stockée. Les deux documents sont désormais liés.</span>
+            </div>
+          </div>
+
+          <p style="margin-top:1.5rem">
+            Deux garde-fous complètent la chaîne. Un contrat déjà signé <strong>ne peut pas l'être
+            une seconde fois</strong> : la route le vérifie avant tout traitement. Et si l'école
+            réédite les termes, l'envoi précédent est invalidé — le champ qui marque la transmission
+            au candidat repasse à zéro, ce qui interdit de signer une version qui n'est plus
+            d'actualité.
+          </p>
+
+          <p style="margin-top:1.5rem">
+            Dernier détail, volontaire : l'envoi des emails est en <strong>meilleur effort</strong>.
+            Si le serveur mail échoue, la signature reste valide et le document téléchargeable des
+            deux côtés. Un incident d'infrastructure ne doit pas annuler un acte juridique.
+          </p>
+        </section>
+
+        <!-- ===================== BILAN ===================== -->
+        <section class="takeaway">
+          <h2>Ce que ce projet m'a appris</h2>
+          <ul>
+            <li><strong>« Sécurisé » n'est pas un réglage uniforme.</strong> Appliquer la même protection partout coûte des fonctionnalités là où le risque est faible, et en donne une fausse impression là où il est réel. Chaque jeton mérite qu'on nomme ce qu'il protège.</li>
+            <li><strong>Tout ce qui vient du client est une affirmation, pas un fait.</strong> Le type d'un fichier, son nom, son extension : autant de déclarations. La seule chose vérifiable est son contenu.</li>
+            <li><strong>Une preuve doit survivre à la confiance.</strong> Afficher l'empreinte avant la signature et la sceller dans le document final ne sert à rien tant que tout se passe bien — c'est précisément pour le jour où ça se passe mal.</li>
+            <li><strong>Les données personnelles ont une date de péremption.</strong> Écrire la purge dès la conception, avec un délai par catégorie et un journal des exécutions, est bien plus simple que de la rajouter sur une base déjà pleine.</li>
+          </ul>
+        </section>
+
+        <div style="margin-top:3rem; display:flex; flex-wrap:wrap; gap:1rem">
+          <a class="btn btn--primary" href="https://yanniss-bouzid.ri7.tech/" target="_blank" rel="noopener noreferrer">Essayer MoniteurConnect <i data-lucide="arrow-up-right"></i></a>
+          <a class="btn btn--ghost" href="../index.html#contact">Me contacter <i data-lucide="mail"></i></a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner container">
+      <a class="brand footer__brand" href="../index.html" aria-label="BOUZID Yanniss — accueil">
+        <svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#yb-logo" /></svg>
+        <span class="brand__text">BOUZID<span class="brand__text-dim"> Yanniss</span></span>
+      </a>
+      <p class="footer__copy">© <span id="year">2026</span> BOUZID Yanniss</p>
+      <div class="footer__social">
+        <a href="https://github.com/yanniss13" aria-label="GitHub"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg></a>
+        <a href="../index.html#contact" aria-label="Email"><i data-lucide="mail"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@1.31.0/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide && typeof window.lucide.createIcons === "function") window.lucide.createIcons();
+    var y = document.getElementById("year");
+    if (y) y.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

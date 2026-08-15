@@ -1,0 +1,111 @@
+/* ============================================================
+   Mise en page des études de cas (projets/*.html).
+   Extrait de nova.html quand une seconde étude est arrivée : garder
+   cent lignes de CSS dupliquées dans chaque page garantissait qu'elles
+   divergent à la première retouche.
+   Le reste vient de la feuille du portfolio, chargée avant celle-ci.
+   ============================================================ */
+
+.case { padding-top: calc(var(--nav-h) + 3rem); }
+.case__back {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color-text-muted); margin-bottom: 1.75rem;
+  transition: color 200ms var(--ease);
+}
+.case__back:hover { color: var(--color-primary-fixed-dim); }
+.case__title {
+  font-family: "Sora", sans-serif;
+  font-size: clamp(2.1rem, 1.2rem + 3vw, 3.2rem);
+  font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+}
+.case__lede { font-size: 1.15rem; color: var(--color-text-muted); max-width: 62ch; margin-top: 1.25rem; }
+.case__meta { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 2rem; }
+
+.figures {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter);
+  margin: 3.5rem 0 1rem; padding: 1.75rem;
+  border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+  background: rgba(19, 27, 46, .55);
+}
+.figure__num {
+  font-family: "Sora", sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1;
+  color: var(--color-primary-container);
+}
+.figure__label {
+  display: block; margin-top: .5rem; font-size: .7rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color-text-muted);
+}
+
+.decision { margin-top: clamp(3rem, 6vw, 4.5rem); }
+.decision__index {
+  font-family: "JetBrains Mono", monospace; font-size: .8rem;
+  color: var(--color-primary-fixed-dim); letter-spacing: .1em;
+}
+.decision__title {
+  font-family: "Sora", sans-serif; font-size: clamp(1.4rem, 1rem + 1.4vw, 1.9rem);
+  font-weight: 700; line-height: 1.25; margin-top: .6rem;
+}
+.decision__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(1.25rem, 3vw, 2.25rem); margin-top: 1.75rem; }
+.block {
+  padding: 1.4rem 1.5rem; border-radius: var(--radius-lg);
+  border: 1px solid var(--hairline); background: rgba(19, 27, 46, .5);
+}
+.block--out { border-color: rgba(0, 240, 255, .22); background: rgba(0, 240, 255, .05); }
+.block h3 {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color-text-muted); margin-bottom: .7rem;
+}
+.block--out h3 { color: var(--color-primary-fixed-dim); }
+.block p + p { margin-top: .8rem; }
+.decision p, .case p { color: var(--color-text-muted); }
+.decision strong, .case strong { color: var(--color-text); font-weight: 700; }
+
+.layers { display: grid; gap: .55rem; margin-top: 1.75rem; }
+.layer {
+  display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; align-items: baseline;
+  padding: .85rem 1.1rem; border-radius: var(--radius);
+  border: 1px solid var(--hairline); background: rgba(6, 14, 32, .45);
+}
+.layer code {
+  font-family: "JetBrains Mono", monospace; font-size: .82rem;
+  color: var(--color-primary-fixed-dim);
+}
+.layer span { color: var(--color-text-muted); font-size: .95rem; }
+.layer--rule {
+  border-color: rgba(220, 184, 255, .28); background: rgba(119, 1, 208, .12);
+  grid-template-columns: minmax(0, 1fr);
+}
+.layer--rule span { color: var(--color-secondary); }
+
+.quote {
+  margin-top: 1.5rem; padding: 1.1rem 1.35rem;
+  border-left: 3px solid var(--color-primary-fixed-dim);
+  background: rgba(0, 240, 255, .05);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-family: "JetBrains Mono", monospace; font-size: .86rem; line-height: 1.7;
+  color: var(--color-text);
+  /* Le contenu est du code ou un message d'interface : il ne doit jamais
+     élargir la page, seulement défiler dans son propre cadre. */
+  overflow-x: auto;
+}
+.quote cite { display: block; margin-top: .6rem; font-family: "Hanken Grotesk", sans-serif; font-style: normal; font-size: .78rem; color: var(--color-text-muted); }
+
+.takeaway {
+  margin-top: clamp(3rem, 6vw, 4.5rem); padding: clamp(1.6rem, 3vw, 2.4rem);
+  border-radius: var(--radius-xl); border: 1px solid rgba(0, 240, 255, .2);
+  background: linear-gradient(140deg, rgba(119, 1, 208, .14), rgba(0, 240, 255, .06));
+}
+.takeaway h2 { font-family: "Sora", sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+.takeaway ul { list-style: none; padding: 0; display: grid; gap: .85rem; }
+.takeaway li { position: relative; padding-left: 1.6rem; color: var(--color-text-muted); }
+.takeaway li::before {
+  content: ""; position: absolute; left: 0; top: .5em;
+  width: 8px; height: 8px; background: var(--color-primary-fixed-dim); transform: rotate(45deg);
+}
+
+@media (max-width: 768px) {
+  .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decision__grid { grid-template-columns: minmax(0, 1fr); }
+  .layer { grid-template-columns: minmax(0, 1fr); gap: .3rem; }
+}
