@@ -158,7 +158,7 @@
             application collaborative temps réel.
           </p>
           <div class="stats reveal" data-delay="3">
-            <div class="stat"><div class="stat__num">05</div><span class="stat__label">Projets phares</span></div>
+            <div class="stat"><div class="stat__num">06</div><span class="stat__label">Projets phares</span></div>
             <div class="stat"><div class="stat__num">70</div><span class="stat__label">Fichiers de test</span></div>
             <div class="stat"><div class="stat__num">15+</div><span class="stat__label">Technologies</span></div>
             <div class="stat"><div class="stat__num">01</div><span class="stat__label">Stage en entreprise</span></div>
@@ -276,7 +276,63 @@
             </div>
           </article>
 
-          <!-- Project 1 — Réseau Social -->
+          <!-- Project 1 — MoniteurConnect (projet de soutenance).
+               En pleine largeur : la carte est trop dense pour une demi-colonne,
+               elle y étirait sa voisine de 450 à 960px. -->
+          <article class="card card--wide reveal">
+            <div class="thumb thumb--map thumb--shot">
+              <span class="thumb__tag">// moniteur-connect</span>
+              <svg class="thumb__art" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <!-- Trame de carte, puis épingles : le projet est une recherche
+                     d'annonces géolocalisée, la vignette le dit sans capture. -->
+                <g stroke="rgba(0,240,255,0.09)" stroke-width="1">
+                  <path d="M0 45H320M0 90H320M0 135H320" />
+                  <path d="M64 0V180M128 0V180M192 0V180M256 0V180" />
+                </g>
+                <path d="M40 128 q46 -34 84 -18 q40 17 76 -22 q30 -32 74 -18"
+                      fill="none" stroke="rgba(0,240,255,0.28)" stroke-width="1.6"
+                      stroke-linecap="round" stroke-dasharray="5 7" />
+                <g fill="none" stroke="#00dbe9" stroke-width="2" stroke-linejoin="round">
+                  <path d="M124 110 c0 -13 -9 -21 -19 -21 s-19 8 -19 21 c0 15 19 33 19 33 s19 -18 19 -33 z"
+                        fill="rgba(0,240,255,.14)" />
+                  <path d="M218 74 c0 -11 -8 -18 -16 -18 s-16 7 -16 18 c0 13 16 28 16 28 s16 -15 16 -28 z"
+                        fill="rgba(0,240,255,.1)" />
+                  <path d="M285 56 c0 -9 -6 -15 -13 -15 s-13 6 -13 15 c0 11 13 23 13 23 s13 -12 13 -23 z"
+                        fill="rgba(220,184,255,.12)" stroke="rgba(220,184,255,.75)" />
+                </g>
+                <g fill="#0b1326">
+                  <circle cx="105" cy="108" r="6.5" /><circle cx="202" cy="73" r="5.5" /><circle cx="272" cy="55" r="4.5" />
+                </g>
+              </svg>
+              <img class="thumb__shot" src="./assets/img/projects/moniteur-connect.jpg" alt="Interface de MoniteurConnect : la recherche d'annonces en vue carte, avec les filtres par mot-clé, département, ville et rayon, et quinze annonces localisées sur la France." loading="lazy" width="1280" height="720" />
+              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+            </div>
+            <div class="card__body">
+              <span class="card__badge"><i data-lucide="graduation-cap"></i> Projet de soutenance</span>
+              <h3 class="card__title">MoniteurConnect — Plateforme de mise en relation</h3>
+              <p class="card__desc">
+                Plateforme d'annonces reliant les auto-écoles et les moniteurs indépendants. Les écoles
+                publient leurs besoins et suivent les candidatures jusqu'au contrat signé électroniquement ;
+                les moniteurs postulent avec leurs pièces justificatives sans créer de compte, et suivent
+                leur dossier par un lien privé.
+              </p>
+              <ul class="card__highlights">
+                <li><i data-lucide="pen-tool"></i> Signature électronique : contrat PDF généré, contresigné, empreintes SHA-256 et horodatages</li>
+                <li><i data-lucide="map-pin"></i> Recherche géographique par ville et rayon, avec vue carte</li>
+                <li><i data-lucide="badge-check"></i> Vérification du SIRET via le répertoire Sirene, pièces contrôlées par magic bytes</li>
+                <li><i data-lucide="shield-check"></i> Purge RGPD automatique et journalisée, alertes email en double opt-in</li>
+              </ul>
+              <div class="chips">
+                <span class="chip">Node.js</span><span class="chip">Express 5</span><span class="chip">Twig</span><span class="chip">Prisma</span><span class="chip">PostgreSQL</span><span class="chip">PDFKit</span><span class="chip">Leaflet</span>
+              </div>
+              <div class="card__links">
+                <a class="card__link" href="https://yanniss-bouzid.ri7.tech/" target="_blank" rel="noopener noreferrer" aria-label="Démo live — MoniteurConnect"><i data-lucide="external-link"></i> Démo live</a>
+                <a class="card__link" href="https://github.com/yanniss13/ProjetFamilleAuto-Ecole" target="_blank" rel="noopener noreferrer" aria-label="Dépôt GitHub — MoniteurConnect"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github" /></svg> GitHub</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 — Réseau Social -->
           <article class="card reveal">
             <div class="thumb thumb--graph">
               <span class="thumb__tag">// social-network</span>
@@ -310,7 +366,7 @@
             </div>
           </article>
 
-          <!-- Project 2 — API Recettes -->
+          <!-- Project 3 — API Recettes -->
           <article class="card reveal" data-delay="1">
             <div class="thumb thumb--api thumb--shot">
               <span class="thumb__tag">// recipes-api</span>
@@ -336,7 +392,7 @@
             </div>
           </article>
 
-          <!-- Project 3 — Game of Life.
+          <!-- Project 4 — Game of Life.
                Le canvas ci-dessous est une décoration de CETTE page : il rejoue une
                simulation dans la vignette. Le projet lui-même n'utilise pas Canvas,
                il rend sa grille en DOM. -->
@@ -373,7 +429,7 @@
             </div>
           </article>
 
-          <!-- Project 4 — Jeux Classiques -->
+          <!-- Project 5 — Jeux Classiques -->
           <article class="card reveal" data-delay="1">
             <div class="thumb thumb--board thumb--shot">
               <span class="thumb__tag">// classic-games</span>

@@ -473,7 +473,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 /* ============================= PROJECTS ============================= */
 .projects__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, 1fr) : voir .skills__grid — une piste `1fr` refuse de descendre
+     sous la largeur de son contenu et déborde la page sur petits écrans. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 .card {
@@ -613,6 +615,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
   transform: none;
   box-shadow: 0 18px 48px -18px rgba(0, 240, 255, 0.35);
 }
+/* Pleine largeur, mais sans le traitement réservé au projet phare : même mise
+   en page horizontale, fond et bordure d'une carte ordinaire. Sert aux projets
+   trop denses pour une demi-colonne — dans une grille à deux colonnes, une
+   carte de 960px étire sa voisine d'autant et laisse un grand vide à côté. */
+.card--wide { grid-column: 1 / -1; }
+.card--wide:hover { transform: none; }
 .card__badge {
   display: inline-flex;
   align-items: center;
@@ -653,12 +661,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 }
 
 @media (min-width: 769px) {
-  .card--featured { flex-direction: row; align-items: stretch; }
-  .card--featured .thumb { flex: 1 1 50%; aspect-ratio: auto; }
-  /* La vignette de la carte phare s'étire sur la hauteur du texte : une capture
+  .card--featured, .card--wide { flex-direction: row; align-items: stretch; }
+  .card--featured .thumb, .card--wide .thumb { flex: 1 1 50%; aspect-ratio: auto; }
+  /* La vignette pleine largeur s'étire sur la hauteur du texte : une capture
      16/9 y serait rognée et agrandie à l'excès. On l'affiche entière, centrée,
      posée sur le fond dégradé de la vignette. */
-  .card--featured .thumb__shot {
+  .card--featured .thumb__shot, .card--wide .thumb__shot {
     object-fit: contain;
     object-position: center;
     padding: clamp(.75rem, 1.4vw, 1.25rem);
@@ -666,9 +674,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
        box-shadow qui ombrerait toute la boîte, bandes vides comprises. */
     filter: drop-shadow(0 16px 34px rgba(0, 0, 0, .55));
   }
-  .card--featured .card__body { flex: 1 1 50%; justify-content: center; padding: clamp(1.75rem, 2.5vw, 2.5rem); }
-  .card--featured .card__title { font-size: 1.7rem; }
-  .card--featured .card__desc { flex: 0 1 auto; }
+  .card--featured .card__body, .card--wide .card__body { flex: 1 1 50%; justify-content: center; padding: clamp(1.75rem, 2.5vw, 2.5rem); }
+  .card--featured .card__title, .card--wide .card__title { font-size: 1.7rem; }
+  .card--featured .card__desc, .card--wide .card__desc { flex: 0 1 auto; }
 }
 
 /* --- Thumb motifs --- */
@@ -682,6 +690,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 .thumb--api { background: linear-gradient(160deg, #11203a, #070f22); }
 .thumb--gol { background: #050b1c; }
 .thumb--board { background: radial-gradient(120% 120% at 20% 10%, #1c1736, #0a0a1e); }
+.thumb--map { background: radial-gradient(120% 130% at 70% 15%, #16283f, #070f1e); }
 .thumb--gol canvas { width: 100%; height: 100%; }
 .thumb--nova { background: radial-gradient(125% 115% at 15% 0%, #1b2450, #070d20); }
 
@@ -1019,7 +1028,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
   .hero__visual { order: -1; }
   .about__grid { grid-template-columns: 1fr; }
   .about__panel { order: 2; }
-  .projects__grid { grid-template-columns: 1fr; }
+  .projects__grid { grid-template-columns: minmax(0, 1fr); }
   .skills__grid { grid-template-columns: minmax(0, 1fr); }
   .contact__grid { grid-template-columns: minmax(0, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
