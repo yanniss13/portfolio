@@ -21,7 +21,7 @@
       ["", "  "], ["tok-prop", "stack"], ["tok-punc", ": ["], ["tok-str", "\"Node.js\""], ["tok-punc", ", "], ["tok-str", "\"Express\""], ["tok-punc", ", "], ["tok-str", "\"Supabase\""], ["tok-punc", ", "], ["", "\n"], ["", "          "], ["tok-str", "\"PostgreSQL\""], ["tok-punc", ", "], ["tok-str", "\"PHP\""], ["tok-punc", ", "], ["tok-str", "\"JavaScript\""], ["tok-punc", "],"], ["", "\n"],
       ["", "  "], ["tok-prop", "ships"], ["tok-punc", ": ["], ["tok-str", "\"realtime\""], ["tok-punc", ", "], ["tok-str", "\"PWA\""], ["tok-punc", ", "], ["tok-str", "\"tested\""], ["tok-punc", ", "], ["tok-str", "\"CI/CD\""], ["tok-punc", "],"], ["", "\n"],
       ["", "  "], ["tok-prop", "status"], ["tok-punc", ": "], ["tok-str", "\"open_to_opportunities\""], ["tok-punc", ","], ["", "\n"],
-      ["", "  "], ["tok-prop", "bootcamp"], ["tok-punc", ": "], ["tok-str", "\"RI7 Coding Bootcamp\""], ["", "\n"],
+      ["", "  "], ["tok-prop", "formation"], ["tok-punc", ": "], ["tok-str", "\"Développeur web et web mobile\""], ["", "\n"],
       ["tok-punc", "};"]
     ];
     var total = T.reduce(function (s, t) { return s + t[1].length; }, 0);

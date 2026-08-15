@@ -332,6 +332,11 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 
 /* Terminal */
 .terminal {
+  /* Conteneur de requête : la taille du texte ci-dessous se règle sur la
+     largeur DU BLOC, pas sur celle du viewport. En paysage sur mobile, le
+     viewport est large alors que la colonne reste étroite — un calcul en vw
+     donnerait une police trop grosse et le code déborderait à nouveau. */
+  container-type: inline-size;
   background: rgba(6, 14, 32, 0.82);
   border: 1px solid var(--hairline-strong);
   border-radius: var(--radius-lg);
@@ -362,13 +367,26 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 }
 .terminal__body {
   margin: 0;
-  padding: 1.25rem 1.35rem;
+  /* En em : la marge intérieure suit la police, donc le rapport texte/cadre
+     reste constant quelle que soit la largeur. */
+  padding: 1.45em 1.6em;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.85rem;
+  font-size: 0.85rem;                 /* repli si les unités cqi manquent */
+  /* La ligne la plus longue de l'animation fait 48 caractères. En chasse fixe
+     un caractère mesure 0,6 em, soit 48 x 0,6 + 2 x 1,6 (marges) = 32 em de
+     large. Sous 3,1 % de la largeur du bloc, la ligne rentre donc toujours ;
+     on prend 3 % pour la marge d'erreur, sans jamais dépasser 0,85rem. */
+  /* Plancher à 8px : c'est la taille à laquelle les 48 caractères tiennent
+     encore dans la colonne la plus étroite du site (~265px, en paysage sur
+     mobile). Au-dessus, le bloc se mettrait à défiler horizontalement. */
+  font-size: clamp(0.5rem, 3cqi, 0.85rem);
   line-height: 1.7;
   color: var(--color-text);
   white-space: pre;
-  overflow-x: clip;
+  /* auto et non clip : si le calcul ci-dessus est pris en défaut (police de
+     repli plus large, contenu rallongé), le texte reste atteignable au lieu
+     d'être tronqué sans le moindre signe. */
+  overflow-x: auto;
   overflow-y: visible;
   height: auto;
   min-height: 0;
@@ -737,7 +755,10 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 /* ============================= SKILLS ============================= */
 .skills__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* minmax(0, 1fr) et non 1fr : une piste `1fr` a un minimum implicite de
+     min-content, donc elle refuse de descendre sous la largeur du contenu et
+     déborde la page au lieu de le comprimer. Visible sous 360px de large. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--gutter);
 }
 .skill-card {
@@ -999,8 +1020,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
   .about__grid { grid-template-columns: 1fr; }
   .about__panel { order: 2; }
   .projects__grid { grid-template-columns: 1fr; }
-  .skills__grid { grid-template-columns: 1fr; }
-  .contact__grid { grid-template-columns: 1fr; }
+  .skills__grid { grid-template-columns: minmax(0, 1fr); }
+  .contact__grid { grid-template-columns: minmax(0, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
 }
 
