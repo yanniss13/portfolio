@@ -84,7 +84,7 @@
   </header>
 
   <!-- ============================= MOBILE MENU OVERLAY ============================= -->
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu principal" aria-hidden="true">
     <button class="mobile-menu__close" id="menu-close" aria-label="Fermer le menu">
       <i data-lucide="x"></i>
     </button>
@@ -170,7 +170,7 @@
     <section class="section section--bordered" id="projects">
       <div class="container">
         <div class="section__head reveal">
-          <h2 class="section__title">Projets phares</h2>
+          <h2 class="section__title">Projets sélectionnés</h2>
           <span class="section__rule"></span>
         </div>
 
@@ -249,7 +249,7 @@
                 </g>
               </svg>
               <img class="thumb__shot" src="./assets/img/projects/nova.jpg" alt="Interface de NOVA : le wiki de l'application, avec la grille des 25 héros du jeu, la barre de recherche et les filtres par élément, arme, rôle et rareté." loading="lazy" width="1280" height="720" />
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="./projets/nova.html" aria-label="Voir l'étude de cas de NOVA">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <span class="card__badge"><i data-lucide="sparkles"></i> Projet phare</span>
@@ -305,7 +305,7 @@
                 </g>
               </svg>
               <img class="thumb__shot" src="./assets/img/projects/moniteur-connect.jpg" alt="Interface de MoniteurConnect : la recherche d'annonces en vue carte, avec les filtres par mot-clé, département, ville et rayon, et quinze annonces localisées sur la France." loading="lazy" width="1280" height="720" />
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="./projets/moniteur-connect.html" aria-label="Voir l'étude de cas de MoniteurConnect">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <span class="card__badge"><i data-lucide="graduation-cap"></i> Projet de soutenance</span>
@@ -333,6 +333,17 @@
             </div>
           </article>
 
+        </div>
+
+        <div class="projects__more">
+          <div class="projects__more-head reveal">
+            <p class="eyebrow">Autres réalisations</p>
+            <h3 class="projects__more-title">Projets d'apprentissage et expérimentations</h3>
+            <p>Des projets plus courts qui illustrent des bases solides en PHP, JavaScript, API REST, algorithmes et interfaces.</p>
+          </div>
+
+          <div class="projects__grid projects__grid--secondary">
+
           <!-- Project 2 — Réseau Social -->
           <article class="card reveal">
             <div class="thumb thumb--graph">
@@ -352,7 +363,7 @@
               </svg>
               <!-- Pas de capture ici : le fil affiche les publications et pseudos de vrais
                    utilisateurs, qui n'ont pas consenti à figurer sur ce portfolio. -->
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="https://yanniss.gt.tc/Projet_Resaux/public/index.php?action=login" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir la démo de l'application Réseau Social">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <h3 class="card__title">Application Réseau Social</h3>
@@ -378,7 +389,7 @@
                 <div class="res">→ 200 OK · application/json</div>
               </div>
               <img class="thumb__shot" src="./assets/img/projects/api-recettes.jpg" alt="Interface de l'application API Recettes : page d'accueil sombre avec barre de recherche et filtres par catégorie et difficulté." loading="lazy" width="1280" height="720" />
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="https://yanniss13.github.io/Projet---Cr-ation-d-api-avec-NodeJS/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir la démo d'API Recettes">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <h3 class="card__title">API Recettes</h3>
@@ -415,7 +426,7 @@
                      aria-label="Le Jeu de la vie en cours d'exécution : sur la grille sombre, un canon à planeurs et deux pulsars verts évoluent de génération en génération, sous les boutons Démarrer, Étape, Aléatoire et Vider.">
                 <source src="./assets/video/game-of-life.mp4" type="video/mp4" />
               </video>
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="https://yanniss13.github.io/JeuDeLaVie/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir la démo de Game of Life">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <h3 class="card__title">Game of Life</h3>
@@ -446,7 +457,7 @@
                 <span><svg viewBox="0 0 24 24" fill="none" stroke="#00dbe9" stroke-width="3" stroke-linecap="round"><path d="M5 5 L19 19 M19 5 L5 19" /></svg></span>
               </div>
               <img class="thumb__shot" src="./assets/img/projects/morpion.jpg" alt="Le jeu Morpion x Puissance 4 : plateau de jeu sur un fond synthwave, avec les sélecteurs de mode et de taille de grille." loading="lazy" width="1280" height="720" />
-              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+              <a class="thumb-overlay" href="https://yanniss13.github.io/Projet-Morpion/" target="_blank" rel="noopener noreferrer" aria-label="Ouvrir la démo de Jeux Classiques">Voir le projet <i data-lucide="arrow-up-right"></i></a>
             </div>
             <div class="card__body">
               <h3 class="card__title">Jeux Classiques</h3>
@@ -561,11 +572,11 @@
             <div class="form__row">
               <div class="field">
                 <label for="name">Nom</label>
-                <input type="text" id="name" name="name" placeholder="Votre nom" required />
+                <input type="text" id="name" name="name" placeholder="Votre nom" autocomplete="name" required />
               </div>
               <div class="field">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="vous@exemple.com" required />
+                <input type="email" id="email" name="email" placeholder="vous@exemple.com" autocomplete="email" required />
               </div>
             </div>
             <div class="field">
@@ -575,6 +586,9 @@
             <button class="btn btn--primary" type="submit" id="form-submit">
               <span id="form-submit-label">Envoyer le message</span> <i data-lucide="send"></i>
             </button>
+            <p class="form__privacy" id="form-privacy">
+              Vos nom, e-mail et message sont transmis à Web3Forms pour acheminer votre demande et vous répondre. Vous pouvez aussi me contacter directement par <a href="mailto:yanniss.27@hotmail.fr">e-mail</a>.
+            </p>
             <p class="form__success" id="form-success" role="status">
               <i data-lucide="check-circle-2"></i> Merci ! Votre message m'a bien été envoyé, je vous réponds vite.
             </p>

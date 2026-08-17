@@ -471,6 +471,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 }
 
 /* ============================= PROJECTS ============================= */
+#projects .container { max-width: 1440px; }
 .projects__grid {
   display: grid;
   /* minmax(0, 1fr) : voir .skills__grid — une piste `1fr` refuse de descendre
@@ -478,6 +479,15 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.25rem, 2.5vw, 2rem);
 }
+.projects__more { margin-top: clamp(3.5rem, 8vw, 6.5rem); }
+.projects__more-head { max-width: 720px; margin-bottom: clamp(1.75rem, 3vw, 2.5rem); }
+.projects__more-title {
+  margin-top: 0.45rem;
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+.projects__more-head > p:last-child { margin-top: 0.75rem; color: var(--color-text-muted); }
 .card {
   display: flex;
   flex-direction: column;
@@ -885,6 +895,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 }
 .form__error.show { display: flex; }
 .form__error i, .form__error .lucide { width: 18px; height: 18px; flex: none; }
+.form__privacy { max-width: 62ch; font-size: 0.78rem; line-height: 1.55; color: var(--color-text-muted); }
+.form__privacy a { color: var(--color-primary-fixed-dim); text-decoration: underline; text-underline-offset: 0.16em; }
 
 /* Honeypot — off-screen, never shown to a human */
 .hp {

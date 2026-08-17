@@ -187,24 +187,56 @@
   var burger = document.getElementById("burger");
   var menu = document.getElementById("mobile-menu");
   var menuClose = document.getElementById("menu-close");
+  var previousFocus = null;
+  var menuFocusable = function () {
+    if (!menu) return [];
+    return Array.prototype.slice.call(menu.querySelectorAll('a[href], button:not([disabled])'));
+  };
   function openMenu() {
+    previousFocus = document.activeElement;
+    if ("inert" in menu) menu.inert = false;
     menu.classList.add("open");
     menu.setAttribute("aria-hidden", "false");
     burger.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
+    window.requestAnimationFrame(function () {
+      var first = menuClose || menuFocusable()[0];
+      if (first) first.focus();
+    });
   }
-  function closeMenu() {
+  function closeMenu(restoreFocus) {
     menu.classList.remove("open");
     menu.setAttribute("aria-hidden", "true");
     burger.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
+    if ("inert" in menu) menu.inert = true;
+    if (restoreFocus !== false && previousFocus && typeof previousFocus.focus === "function") {
+      previousFocus.focus();
+    }
+    previousFocus = null;
+  }
+  function trapMenuFocus(e) {
+    if (e.key !== "Tab" || !menu.classList.contains("open")) return;
+    var focusable = menuFocusable();
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   }
   if (burger && menu) {
+    if ("inert" in menu) menu.inert = true;
     burger.addEventListener("click", openMenu);
     if (menuClose) menuClose.addEventListener("click", closeMenu);
-    menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", closeMenu); });
+    menu.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", function () { closeMenu(false); }); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
+      trapMenuFocus(e);
     });
   }
 
