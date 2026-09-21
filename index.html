@@ -248,25 +248,31 @@
                   </g>
                 </g>
               </svg>
+<<<<<<< HEAD
               <img class="thumb__shot" src="./assets/img/projects/nova.jpg" alt="Interface de NOVA : le wiki de l'application, avec la grille des 25 héros du jeu, la barre de recherche et les filtres par élément, arme, rôle et rareté." loading="lazy" width="1280" height="720" />
               <a class="thumb-overlay" href="./projets/nova.html" aria-label="Voir l'étude de cas de NOVA">Voir le projet <i data-lucide="arrow-up-right"></i></a>
+=======
+              <img class="thumb__shot" src="./assets/img/projects/nova.jpg" alt="Accueil de NOVA : le titre « Tout le jeu, en français. » sur un paysage de château nocturne, Meliodas à droite, et la navigation entre équipes, wiki, collection et calculateur." loading="lazy" width="1280" height="720" />
+              <div class="thumb-overlay">Voir le projet <i data-lucide="arrow-up-right"></i></div>
+>>>>>>> 77d1963 (Met NOVA a jour : nouvelle capture, chiffres et etude de cas)
             </div>
             <div class="card__body">
               <span class="card__badge"><i data-lucide="sparkles"></i> Projet phare</span>
               <h3 class="card__title">NOVA — Team Builder collaboratif</h3>
               <p class="card__desc">
-                Application web collaborative permettant aux membres d'une guilde de composer, équiper et
-                partager leurs équipes de raid. Architecture ES modules en couches, données synchronisées
-                en direct entre tous les membres, et fonctionnement complet hors-ligne.
+                PWA communautaire pour une guilde de <em>The Seven Deadly Sins: Origin</em> : composer et
+                équiper ses équipes, partager son roster, chiffrer ses dégâts et organiser les sessions de
+                boss de la semaine. Données synchronisées en direct entre les membres, fonctionnement
+                complet hors-ligne, architecture ES modules en cinq couches.
               </p>
               <ul class="card__highlights">
                 <li><i data-lucide="radio"></i> Synchronisation temps réel multi-utilisateurs via Supabase Realtime</li>
-                <li><i data-lucide="wifi-off"></i> PWA installable — reste utilisable sans connexion</li>
-                <li><i data-lucide="shield-check"></i> 70 fichiers de test : unitaires, schémas SQL et E2E Playwright</li>
-                <li><i data-lucide="git-branch"></i> Intégration et déploiement continus via GitHub Actions</li>
+                <li><i data-lucide="scan-text"></i> Import d'un build par captures d'écran, chaque valeur lue revérifiée par recalcul</li>
+                <li><i data-lucide="bot"></i> Bot Discord qui publie fiches de build et planning, servi par des Edge Functions Supabase</li>
+                <li><i data-lucide="shield-check"></i> 128 fichiers de test, exécutés en CI sur chaque branche avant tout déploiement</li>
               </ul>
               <div class="chips">
-                <span class="chip">JavaScript</span><span class="chip">ES Modules</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Realtime</span><span class="chip">PWA</span><span class="chip">Playwright</span><span class="chip">GitHub Actions</span>
+                <span class="chip">JavaScript</span><span class="chip">ES Modules</span><span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Realtime</span><span class="chip">Edge Functions</span><span class="chip">PWA</span><span class="chip">Playwright</span><span class="chip">GitHub Actions</span>
               </div>
               <div class="card__links">
                 <a class="card__link card__link--accent" href="./projets/nova.html" aria-label="Étude de cas technique — NOVA"><i data-lucide="file-text"></i> Étude de cas</a>

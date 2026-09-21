@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NOVA — Étude de cas | BOUZID Yanniss</title>
-  <meta name="description" content="Étude de cas de NOVA, application collaborative temps réel : architecture en couches vérifiée par un test, mises à jour PWA explicites et moteur de statistiques en borne basse." />
+  <meta name="description" content="Étude de cas de NOVA, application collaborative temps réel : architecture en couches vérifiée par un test, mises à jour PWA explicites, calculs qui ne chiffrent que ce qui est connu, et import de captures revérifié par recalcul." />
   <link rel="canonical" href="https://yanniss13.github.io/portfolio/projets/nova.html" />
   <meta name="theme-color" content="#0b1326" />
 
@@ -15,7 +15,7 @@
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:url" content="https://yanniss13.github.io/portfolio/projets/nova.html" />
   <meta property="og:title" content="NOVA — Étude de cas technique" />
-  <meta property="og:description" content="Trois décisions techniques sur une application collaborative temps réel : architecture en couches, mises à jour PWA explicites, statistiques en borne basse." />
+  <meta property="og:description" content="Quatre décisions techniques sur une application collaborative temps réel : architecture en couches, mises à jour PWA explicites, calculs honnêtes, import de captures vérifié." />
   <meta property="og:image" content="https://yanniss13.github.io/portfolio/assets/img/og-image.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -57,13 +57,15 @@
         <a class="case__back" href="../index.html#projects"><i data-lucide="arrow-left"></i> Retour aux projets</a>
 
         <p class="eyebrow">Étude de cas</p>
-        <h1 class="case__title">NOVA — trois décisions pour une app<br class="hide-sm" /> collaborative <span class="grad">temps réel</span></h1>
+        <h1 class="case__title">NOVA — quatre décisions pour une app<br class="hide-sm" /> collaborative <span class="grad">temps réel</span></h1>
 
         <p class="case__lede">
-          NOVA permet aux membres d'une guilde de composer et partager leurs équipes de raid.
-          Plusieurs personnes modifient les mêmes données en même temps, souvent depuis un
-          téléphone, parfois sans réseau. Trois contraintes qui ont chacune imposé une décision
-          technique — voici lesquelles, et pourquoi.
+          NOVA sert une guilde de <em>The Seven Deadly Sins: Origin</em> : composer et partager ses
+          équipes, tenir son roster à jour, chiffrer ses dégâts contre le boss et organiser les
+          sessions de la semaine, jusque dans Discord. Plusieurs personnes modifient les mêmes
+          données en même temps, souvent depuis un téléphone, parfois sans réseau, et prennent
+          leurs décisions sur les chiffres affichés. Quatre contraintes qui ont chacune imposé une
+          décision technique — voici lesquelles, et pourquoi.
         </p>
 
         <div class="case__meta">
@@ -73,9 +75,9 @@
 
         <div class="figures">
           <div><div class="figure__num">5</div><span class="figure__label">Couches</span></div>
-          <div><div class="figure__num">70</div><span class="figure__label">Fichiers de test</span></div>
-          <div><div class="figure__num">25</div><span class="figure__label">Héros modélisés</span></div>
-          <div><div class="figure__num">155</div><span class="figure__label">Armes référencées</span></div>
+          <div><div class="figure__num">128</div><span class="figure__label">Fichiers de test</span></div>
+          <div><div class="figure__num">27</div><span class="figure__label">Héros modélisés</span></div>
+          <div><div class="figure__num">156</div><span class="figure__label">Armes référencées</span></div>
         </div>
 
         <!-- ===================== DÉCISION 1 ===================== -->
@@ -169,7 +171,7 @@
         <!-- ===================== DÉCISION 3 ===================== -->
         <section class="decision">
           <p class="decision__index">03</p>
-          <h2 class="decision__title">Le calculateur annonce une borne basse, jamais une estimation</h2>
+          <h2 class="decision__title">Le calculateur ne chiffre que ce qu'il sait</h2>
 
           <div class="decision__grid">
             <div class="block">
@@ -199,14 +201,22 @@
           </div>
 
           <p style="margin-top:1.5rem">
-            La même règle s'applique au calculateur de dégâts, qui annonce un chiffre par
-            compétence et refuse d'afficher un dégât par seconde — parce que les temps d'animation
-            du jeu ne sont mesurés nulle part, et qu'un DPS calculé sans eux serait une invention.
+            La même règle a longtemps tenu le calculateur de dégâts à un chiffre par compétence :
+            sans les temps d'animation, qu'aucune source publique ne donne, un dégât par seconde
+            aurait été une invention. Le DPS n'est arrivé qu'une fois ces durées connues. Il se
+            calcule aujourd'hui sur une fenêtre simulée de 60 secondes, recharges et jauge de magie
+            comprises, contre chacun des trente paliers du boss.
+          </p>
+          <p style="margin-top:1rem">
+            Ce qui manque encore n'est pas comblé par une hypothèse. Les membres chronomètrent en jeu
+            les compétences restantes, et l'application leur dit lesquelles mesurer d'abord : celles
+            qui débloquent un calcul, puis celles dont l'absence fausse le plus le résultat.
           </p>
 
           <p class="quote">
-            « Les dégâts de chaque compétence de tes builds contre Akumu. Un chiffre par compétence,
-            jamais un dégât par seconde : les temps d'animation ne sont mesurés nulle part. »
+            « Le DPS d'une fenêtre de 60 s, contre chaque palier d'Akumu. Le classement change d'un
+            palier à l'autre : la résistance crit. du boss dépasse le taux crit. d'un héros vers le
+            palier 18, et sa défense crit. triple au palier 21. »
             <cite>Texte affiché dans l'application</cite>
           </p>
 
@@ -217,13 +227,50 @@
           </p>
         </section>
 
+        <!-- ===================== DÉCISION 4 ===================== -->
+        <section class="decision">
+          <p class="decision__index">04</p>
+          <h2 class="decision__title">Lire une capture d'écran, oui — la croire sur parole, non</h2>
+
+          <div class="decision__grid">
+            <div class="block">
+              <h3>Le problème</h3>
+              <p>
+                Saisir un build à la main, c'est recopier une arme, cinq pièces d'armure et leurs
+                statistiques au centième près : <code>16.80&nbsp;%</code> et <code>16.81&nbsp;%</code> désignent
+                deux enchantements différents. Les membres préfèrent envoyer une capture de l'écran
+                d'équipement du jeu.
+              </p>
+              <p>
+                Mais un OCR, comme un modèle de langage, peut lire de travers. Une valeur mal lue
+                écrite dans le roster fausse ensuite chaque calcul qui en dépend.
+              </p>
+            </div>
+            <div class="block block--out">
+              <h3>Ce que ça change</h3>
+              <p>
+                La lecture ne décide de rien. Tesseract dans le navigateur, ou un modèle pour un
+                membre connecté, ne fait que <strong>transcrire</strong>, sous un même format. Tout
+                passe ensuite par le juge de la saisie manuelle : il parcourt le catalogue et ne
+                garde que les configurations dont les totaux <strong>recalculés</strong> reproduisent
+                ce qui a été lu.
+              </p>
+              <p>
+                Rien n'est écrit avant que le membre ait relu le récapitulatif et validé. Hors
+                ligne, ou si l'appel au modèle échoue, Tesseract prend le relais.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <!-- ===================== BILAN ===================== -->
         <section class="takeaway">
           <h2>Ce que ce projet m'a appris</h2>
           <ul>
             <li><strong>Une règle non vérifiée n'existe pas.</strong> Tant que la contrainte d'architecture vivait dans un fichier de documentation, elle se contournait sans que personne s'en aperçoive. Depuis qu'un test la vérifie, elle tient.</li>
             <li><strong>Le comportement par défaut n'est pas toujours le bon.</strong> Installer une mise à jour immédiatement est le réflexe des tutoriels ; c'était le mauvais choix pour des utilisateurs au milieu d'une tâche longue.</li>
-            <li><strong>Mieux vaut ne rien afficher qu'afficher un chiffre faux.</strong> Reconnaître les limites d'un calcul dans l'interface elle-même vaut mieux que produire une valeur invérifiable.</li>
+            <li><strong>Mieux vaut ne rien afficher qu'afficher un chiffre faux.</strong> Reconnaître les limites d'un calcul dans l'interface elle-même vaut mieux que produire une valeur invérifiable. Et le jour où la donnée manquante arrive, la fonctionnalité refusée devient possible sans avoir menti entre-temps.</li>
+            <li><strong>Une lecture automatique est une proposition, pas une donnée.</strong> OCR ou modèle, sa sortie ne compte qu'une fois recoupée par un calcul indépendant et validée par l'utilisateur.</li>
             <li><strong>Le temps réel change la façon de penser l'état.</strong> Quand plusieurs personnes modifient les mêmes données simultanément, séparer l'état partagé, la logique et le rendu cesse d'être une élégance : c'est ce qui rend le problème traitable.</li>
           </ul>
         </section>
