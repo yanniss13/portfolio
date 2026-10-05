@@ -146,7 +146,9 @@
     letter-spacing: .11em;
     text-transform: uppercase;
     color: var(--accent);
-    margin: 4.5mm 0 2.1mm;
+    /* 3.6mm et non plus : à 4.5mm la dernière puce finissait à 4.5mm du bord,
+       dans la marge physique des imprimantes, et sortait coupée sur papier. */
+    margin: 3.6mm 0 2.1mm;
     padding-bottom: 1.2mm;
     border-bottom: 1px solid var(--rule);
   }
