@@ -1,6 +1,7 @@
 # tools/
 
-Génération de l'animation de la vignette « Game of Life » du portfolio.
+Génération des visuels du portfolio : l'animation de la vignette « Game of Life »
+(`capture-frames.js`) et les captures des autres projets (`capture-projets.js`).
 
 ## Pourquoi ces scripts
 
@@ -98,3 +99,58 @@ Le script ne suppose rien de tout ça : il mesure la période réelle du cadre, 
 - **Garder l'affiche synchronisée.** `index.html` utilise
   `game-of-life.png` comme `poster` ; ce doit être l'image `f000`, sinon
   l'image saute au premier survol.
+
+## Captures des projets (`capture-projets.js`)
+
+Les vignettes de NOVA, MoniteurConnect, du Réseau social, de RecetteBook et du
+Morpion sont de vraies captures, affichées en permanence dans un cadre de
+navigateur (`.browser` dans `style.css`). Avant, elles n'apparaissaient qu'au
+survol : sur téléphone, un recruteur ne voyait jamais les applications.
+
+Chaque capture montre de **vraies données**, jamais un écran vide ou une
+erreur. Trois projets ont donc besoin d'un serveur local avant la capture :
+
+| Projet | À lancer | Écran capturé |
+|---|---|---|
+| NOVA | rien (site en ligne) | Wiki, grille des héros, en visiteur |
+| MoniteurConnect | `npm run seed:demo` puis `PORT=3100 node src/server.js` | tableau de bord de l'école de démonstration |
+| RecetteBook | `mongod` (Laragon), `node server.js`, puis le front sur `127.0.0.1:8082` | liste de recettes saisies par l'API |
+| Réseau social | MySQL (Laragon), base `minisocial_capture`, `php -S 127.0.0.1:8081 -t public` | fil du compte `yanniss@demo.local` |
+| Morpion | rien (site en ligne) | partie de Puissance 4 en cours |
+
+La base `minisocial_capture` est **distincte** de `minisocial` : comptes et
+publications fictifs, pour ne montrer aucun vrai utilisateur. La copie du
+projet qui sert à la capture pointe sur elle (`root`, sans mot de passe) ;
+le projet d'origine n'est pas modifié.
+
+```powershell
+# Edge en mode headless, port de debug ouvert (comme pour le Jeu de la vie)
+$prof = Join-Path $env:TEMP ("capt-" + [guid]::NewGuid().ToString("N").Substring(0,8))
+Start-Process "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" `
+  -ArgumentList "--headless=new","--disable-gpu","--hide-scrollbars",
+                "--user-data-dir=`"$prof`"","--no-first-run",
+                "--remote-debugging-port=9333","--window-size=1280,720","about:blank"
+
+node tools/capture-projets.js 9333             # tout
+node tools/capture-projets.js 9333 nova morpion  # seulement certains projets
+```
+
+Les images sortent en WebP 1600 × 900 (viewport 1280 × 720, densité 1,25),
+de 35 à 110 Ko : assez net pour une vignette affichée sur ~540 px, même sur
+écran haute densité. Garder `width="1600" height="900"` dans `index.html`.
+
+### Pièges rencontrés
+
+- **NOVA ouvre la fenêtre de connexion** pour un profil neuf : le script clique
+  sur « Continuer hors connexion » (`#authOffline`) avant de cadrer.
+- **L'en-tête de NOVA est fixe** : il recouvre ce qui est juste au-dessus de la
+  grille. Le décalage de défilement (−195 px) le fait tomber sur les onglets de
+  catégories plutôt que sur le titre.
+- **RecetteBook n'a pas de photos** dans les recettes de démonstration : la page
+  est réduite à 85 % pour qu'une rangée entière de cartes, texte compris, tienne
+  dans le cadre. Ne pas mettre de photos dont la licence n'est pas claire.
+- **La grille du Puissance 4 dépasse 720 px** : la page est réduite à 78 %.
+- **Encodage MySQL** : charger un script SQL avec
+  `--default-character-set=utf8mb4`, sinon les accents sortent en « ├® ».
+- **La démo publiée de RecetteBook interroge `localhost:3000`** : elle échoue chez
+  tout visiteur. La carte n'a donc plus de lien de démo, seulement GitHub.

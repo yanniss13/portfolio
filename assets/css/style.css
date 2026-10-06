@@ -689,13 +689,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
   .card--featured .card__desc, .card--wide .card__desc { flex: 0 1 auto; }
 }
 
-/* --- Thumb motifs --- */
-.thumb__art { position: absolute; inset: 0; width: 100%; height: 100%; }
-/* L'illustration s'efface pendant que la capture apparaît : sans ça elle
-   transparaît derrière les captures affichées en entier (carte phare). */
-.thumb--shot .thumb__art { transition: opacity 320ms var(--ease); }
-.card:hover .thumb--shot .thumb__art,
-.card:focus-within .thumb--shot .thumb__art { opacity: 0; }
+/* --- Fonds des vignettes --- */
 .thumb--graph { background: radial-gradient(130% 120% at 80% 10%, #1a2746, #0a1124); }
 .thumb--api { background: linear-gradient(160deg, #11203a, #070f22); }
 .thumb--gol { background: #050b1c; }
@@ -704,72 +698,69 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 .thumb--gol canvas { width: 100%; height: 100%; }
 .thumb--nova { background: radial-gradient(125% 115% at 15% 0%, #1b2450, #070d20); }
 
-/* NOVA thumbnail — realtime pulse travelling between two guild members */
-.nova-pulse {
-  animation: nova-travel 3.4s var(--ease) infinite;
-}
-@keyframes nova-travel {
-  0%        { transform: translateX(0);     opacity: 0; }
-  8%, 88%   { opacity: 1; }
-  100%      { transform: translateX(230px); opacity: 0; }
-}
-/* Team slots fill in sequence as the pulse passes over them */
-.nova-slot { opacity: 0.55; animation: nova-fill 3.4s ease-in-out infinite; }
-.nova-slot:nth-child(1) { animation-delay: 0.15s; }
-.nova-slot:nth-child(2) { animation-delay: 0.75s; }
-.nova-slot:nth-child(3) { animation-delay: 1.35s; }
-.nova-slot:nth-child(4) { animation-delay: 1.95s; }
-@keyframes nova-fill {
-  0%, 100% { opacity: 0.55; }
-  25%, 60% { opacity: 1; }
-}
-
-.api-lines {
-  position: absolute;
-  inset: 0;
+/* --- Capture dans un cadre de navigateur ---
+   La capture est visible en permanence, pas seulement au survol : sur
+   téléphone, il n'y a pas de survol, et le recruteur ne voyait jamais
+   l'application. Dans une vignette 16/9, le cadre déborde volontairement en
+   bas (padding en % de la LARGEUR) : on lit l'interface, pas sa bordure. */
+.thumb--frame {
   display: flex;
-  flex-direction: column;
+  align-items: flex-end;
   justify-content: center;
-  gap: 0.6rem;
-  padding: 0 1.5rem;
+  padding: 7% 6.5% 0;
+}
+.browser {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--hairline-strong);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background: var(--color-surface-lowest);
+  box-shadow: 0 22px 44px -16px rgba(0, 0, 0, 0.7);
+  transition: transform 320ms var(--ease), box-shadow 320ms var(--ease);
+}
+.browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 24px;
+  padding: 0 0.7rem;
+  background: var(--color-surface-high);
+  border-bottom: 1px solid var(--hairline);
+}
+.browser__dots { display: flex; gap: 5px; flex: none; }
+.browser__dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--color-outline-variant); }
+.browser__title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.82rem;
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
   color: var(--color-text-muted);
 }
-.api-lines .m {
-  display: inline-block;
-  min-width: 46px;
-  text-align: center;
-  padding: 0.1rem 0.45rem;
-  margin-right: 0.6rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.7rem;
-  font-weight: 500;
+.browser__shot { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.card:hover .browser, .card:focus-within .browser {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 54px -16px rgba(0, 0, 0, 0.8);
 }
-.api-lines .get { color: #7df4ff; background: rgba(0, 240, 255, 0.12); }
-.api-lines .post { color: var(--color-secondary); background: rgba(119, 1, 208, 0.22); }
-.api-lines .put { color: #ffd27d; background: rgba(255, 188, 46, 0.14); }
-.api-lines .res { color: var(--color-primary-fixed-dim); margin-top: 0.3rem; }
-
-.ttt {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 58%;
-  aspect-ratio: 1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-  align-self: center;
-  justify-self: center;
-  top: 0; bottom: 0; left: 0; right: 0;
+/* Carte pleine largeur : la vignette s'étire sur la hauteur du texte. Le cadre
+   y est montré entier, centré, plutôt que coupé en bas. */
+@media (min-width: 769px) {
+  .card--featured .thumb--frame, .card--wide .thumb--frame {
+    align-items: center;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .card--featured .browser, .card--wide .browser {
+    border-bottom: 1px solid var(--hairline-strong);
+    border-radius: 10px;
+  }
 }
-.ttt span {
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center;
+@media (prefers-reduced-motion: reduce) {
+  .browser { transition: none; }
+  .card:hover .browser, .card:focus-within .browser { transform: none; }
 }
-.ttt span svg { width: 56%; height: 56%; }
 
 /* ============================= SKILLS ============================= */
 .skills__grid {
