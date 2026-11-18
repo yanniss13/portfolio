@@ -596,9 +596,12 @@ button { font: inherit; color: inherit; cursor: pointer; border: none; backgroun
 }
 .chip:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--color-primary-fixed-dim); color: var(--color-text); }
 
-.card__links { display: flex; gap: 1.25rem; margin-top: 1.35rem; }
+/* Trois liens ne tiennent pas sur une ligne d'un téléphone de 390 px : ils passent
+   à la ligne entiers au lieu de couper « Étude de / cas » en deux. */
+.card__links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; margin-top: 1.35rem; }
 .card__link {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   gap: 0.4rem;
   min-height: 36px;
